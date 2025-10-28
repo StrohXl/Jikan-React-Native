@@ -24,7 +24,11 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider
-      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        backgroundColor: colorScheme === "dark" ? "#000" : "#fff",
+      }}
     >
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="auto" />

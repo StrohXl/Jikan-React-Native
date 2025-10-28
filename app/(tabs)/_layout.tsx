@@ -1,10 +1,10 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { HapticTab } from "@/components/haptic-tab";
+import TabBarIcon from "@/components/ui/tab-bar-icon";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,22 +12,54 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         tabBarButton: HapticTab,
-      }}>
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          borderRadius: 100,
+          marginBottom: 26,
+          marginInline: 20,
+          height: 45,
+          position: "absolute",
+          overflow: "hidden",
+        },
+        tabBarItemStyle: {
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: 45,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Home",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon icon="home" focused={focused} title="Home" />
+          ),
+          tabBarLabelStyle: {
+            paddingBottom: 0,
+          },
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="search"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Search",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon icon="search" focused={focused} title="Search" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon icon="settings" focused={focused} title="Settings" />
+          ),
         }}
       />
     </Tabs>

@@ -4,8 +4,8 @@ import useFetch from "@/services/useFetch";
 import React from "react";
 import { FlatList, ScrollView, View } from "react-native";
 import AnimeCard from "./AnimeCard";
-import AnimeCardSkeleton from "./Skeletons/AnimeCardSkeleton";
 import { ThemedText } from "./themed-text";
+import AnimeCardSkeleton from "./ui/skeletons/AnimeCardSkeleton";
 
 export function SectionFlatListHorizontalAnimes({
   title,
@@ -14,17 +14,24 @@ export function SectionFlatListHorizontalAnimes({
   title: string;
   fetchFunction: () => Promise<Response<DataAnime>>;
 }) {
-  const { data, error, loading } = useFetch<DataAnime>(fetchFunction);
+  const { data, error, loading } = useFetch<Response<DataAnime>>(fetchFunction);
 
   return (
-    <View className="mt-10">
+    <View>
       <ThemedText type="subtitle" className="mb-4">
         {title}
       </ThemedText>
       {error ? (
         <ThemedText type="defaultSemiBold">Error</ThemedText>
       ) : loading ? (
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={false}
+          contentContainerStyle={{
+            gap: 15,
+          }}
+        >
           <AnimeCardSkeleton show={true} />
           <AnimeCardSkeleton show={true} />
         </ScrollView>
@@ -33,8 +40,9 @@ export function SectionFlatListHorizontalAnimes({
           showsHorizontalScrollIndicator={false}
           data={data?.data}
           keyExtractor={(item) => item.title}
-          renderItem={({ item }) => <AnimeCard anime={item} show={loading} />}
+          renderItem={({ item }) => <AnimeCard anime={item} />}
           horizontal={true}
+          ItemSeparatorComponent={() => <View className="h-1 mx-2"></View>}
         />
       )}
     </View>

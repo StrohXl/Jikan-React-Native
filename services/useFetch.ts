@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { Response } from "./models/response";
 
 export default function useFetch<T>(
-  fetchFunction: () => Promise<Response<T>>,
+  fetchFunction: () => Promise<T>,
   autoFetch = true
 ) {
-  const [data, setData] = useState<Response<T> | null>(null);
+  const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -29,7 +28,7 @@ export default function useFetch<T>(
   };
 
   useEffect(() => {
-    if (autoFetch) fetchData();
+    fetchData();
   }, [autoFetch]);
 
   return { data, loading, error, fetchData, reset };

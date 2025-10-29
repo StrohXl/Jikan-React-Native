@@ -15,13 +15,11 @@ const TabBarIcon = ({
 }) => {
   return (
     <View
-      className={`flex-row w-fit rounded-full  my-auto  text-gray-700 items-center gap-1 justify-center ${focused && "bg-gray-200"}`}
+      className={`flex-row min-w-[125] h-[45] mt-2 rounded-full text-gray-700 items-center gap-1 justify-center ${focused && "bg-gray-200"}`}
+      style={{ width: "100%" }}
     >
       <IconSymbol
         size={28}
-        style={{
-          width: 40,
-        }}
         name={icon}
         color={focused ? "#1f2937" : "#6b7280"}
       />

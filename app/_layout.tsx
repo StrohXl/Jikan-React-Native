@@ -4,7 +4,6 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import "./global.css";
 
@@ -25,14 +24,19 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider
       style={{
-        paddingTop: insets.top,
         paddingBottom: insets.bottom,
-        backgroundColor: colorScheme === "dark" ? "#000" : "#fff",
+        backgroundColor: colorScheme === "dark" ? "#151718" : "#fff",
       }}
     >
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <StatusBar style="auto" />
-        <Stack screenOptions={{}}>
+        <Stack
+          screenOptions={{
+            statusBarStyle: "auto",
+            headerTitle: "",
+            title: "",
+            headerTransparent: true,
+          }}
+        >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="modal"

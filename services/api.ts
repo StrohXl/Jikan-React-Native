@@ -1,4 +1,5 @@
 import { DataAnime } from "./models/dataAnime";
+import { FetchAnimeParams } from "./models/fetchAnimeParams";
 import { FetchTopAnimeParams } from "./models/fetchTopAnimeParams";
 import { ResponseAnimes } from "./models/responseAnimes";
 
@@ -7,7 +8,11 @@ export const baseUrl = `https://api.jikan.moe/v4`;
 export const fetchTopAnimes = async (
   params?: FetchTopAnimeParams
 ): Promise<ResponseAnimes> => {
-  const urlSearchParams = new URLSearchParams(params);
+  const modifiedParams: FetchTopAnimeParams = {
+    ...params,
+    sfw: "true",
+  };
+  const urlSearchParams = new URLSearchParams(modifiedParams);
   const endPoint = `/top/anime`;
   const url = `${baseUrl + endPoint}?${urlSearchParams}`;
   const response = await fetch(url, {
@@ -35,15 +40,15 @@ export const fetchAnimeById = async (
   return data;
 };
 
-export const fetchAnimeSearch = async (
-  text: string
+export const fetchAnime = async (
+  params?: FetchAnimeParams
 ): Promise<ResponseAnimes> => {
-  const params = {
-    order_by: "popularity",
+  const modifiedParams: FetchAnimeParams = {
+    ...params,
+    sfw: "true",
   };
-  const newParams = new URLSearchParams(params);
-
-  const endPoint = `/anime?q=${text}&${newParams}`;
+  const urlSearchParams = new URLSearchParams(modifiedParams);
+  const endPoint = `/anime?${urlSearchParams}`;
   const url = `${baseUrl + endPoint}`;
   const response = await fetch(url, {
     method: "GET",

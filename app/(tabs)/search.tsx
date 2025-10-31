@@ -1,97 +1,117 @@
 import AnimeCard from "@/components/AnimeCard";
 import SearchBar from "@/components/SearchBar";
 import { ThemedText } from "@/components/themed-text";
-import AnimeCardSkeleton from "@/components/ui/skeletons/AnimeCardSkeleton";
-import { fetchAnimeSearch } from "@/services/api";
+import ListEmpty from "@/components/ui/ListEmpty";
+import ColumnGapAnimeCardSkeleton from "@/components/ui/skeletons/ColumnGapAnimeCardSkeleton";
+import { fetchAnime } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, useWindowDimensions, View } from "react-native";
+import { FlatList, useWindowDimensions, View } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 const Search = () => {
   const { search } = useLocalSearchParams();
-  const newSearch = search ? `${search}` : "";
-
-  const [text, setText] = useState<string>(newSearch);
-  const [autoFetch, setAutoFetch] = useState(true);
-
-  useEffect(() => {
-    setText(newSearch);
-    setAutoFetch((value) => !value);
-  }, [newSearch]);
-
-  const { data, loading, error } = useFetch(
-    () => fetchAnimeSearch(text),
-    autoFetch
-  );
-
-  const padding = 10;
+  let newSearch = search ? `${search}` : "";
+  const [text, setText] = useState<string>("");
+  const [textSearch, setTextSearch] = useState<string>("");
+  const paddingHorizontal = 10;
   const { width } = useWindowDimensions();
   const columnGap = 15;
-  const cardWidth = (width - padding * 2 - columnGap) / 2;
+  const cardWidth = (width - paddingHorizontal * 2 - columnGap) / 2;
+
+  const { data, loading, error, fetchData } = useFetch({
+    fetchFunction: () => fetchAnime({ q: newSearch ? newSearch : text }),
+  });
+
+  const onSubmit = () => {
+    if (text !== "") {
+      newSearch = "";
+      setTextSearch(text);
+      fetchData();
+    }
+  };
+
+  useEffect(() => {
+    if (newSearch !== "") {
+      setTextSearch(newSearch);
+      fetchData();
+    }
+    console.log(newSearch);
+  }, [search]);
 
   return (
     <View>
-      <View className="max-w-[300] mx-auto w-full mt-20">
-        <SearchBar
-          placeholder="Search."
-          onChange={(event) => {
-            setText(event.nativeEvent.text);
-          }}
-          onKeyPress={(event) => {
-            event.nativeEvent.key === "Enter" &&
-              setAutoFetch((value) => !value);
-          }}
-          defaultValue={`${newSearch}`}
-        />
-      </View>
-      {error ? (
-        <View>
-          <ThemedText type="subtitle">Error</ThemedText>
-        </View>
-      ) : loading ? (
-        <ScrollView
-          className="mt-10"
-          style={{ paddingInline: padding }}
-          contentContainerStyle={{ gap: 15 }}
-          scrollEnabled={false}
-        >
-          <View className="flex-row" style={{ columnGap: columnGap }}>
-            <AnimeCardSkeleton widthImage={cardWidth} />
-            <AnimeCardSkeleton widthImage={cardWidth} />
-          </View>
-          <View className="flex-row" style={{ columnGap: columnGap }}>
-            <AnimeCardSkeleton widthImage={cardWidth} />
-            <AnimeCardSkeleton widthImage={cardWidth} />
-          </View>
-          <View className="flex-row" style={{ columnGap: columnGap }}>
-            <AnimeCardSkeleton widthImage={cardWidth} />
-            <AnimeCardSkeleton widthImage={cardWidth} />
-          </View>
-        </ScrollView>
-      ) : (
-        <FlatList
-          data={data?.data}
-          keyExtractor={(item) => item.title}
-          renderItem={({ item }) => (
-            <View className="">
-              <AnimeCard widthImage={cardWidth} show={loading} anime={item} />
+      <FlatList
+        data={error ? [] : loading ? [] : data?.data}
+        scrollEnabled={loading ? false : true}
+        keyExtractor={(item) => item.title}
+        ListHeaderComponent={
+          <>
+            <View className=" mx-auto w-full mt-6">
+              <SearchBar
+                text={text}
+                placeholder="Search..."
+                onChange={(event) => {
+                  setText(event.nativeEvent.text);
+                }}
+                onPressClose={() => setText("")}
+                onSubmitEditing={onSubmit}
+                defaultValue={`${newSearch}`}
+              />
             </View>
-          )}
-          className="pt-5 mt-5 grid-cols-2"
-          style={{
-            paddingInline: padding,
-          }}
-          horizontal={false}
-          contentContainerStyle={{
-            gap: 15,
-          }}
-          columnWrapperStyle={{
-            gap: 15,
-          }}
-          numColumns={2}
-        />
-      )}
+            <ThemedText
+              type="defaultSemiBold"
+              className="mt-4 gray-200 line-clamp-1"
+            >
+              Search Results for {textSearch}
+            </ThemedText>
+          </>
+        }
+        renderItem={({ item, index }) => (
+          <Animated.View entering={FadeIn.duration(500)}>
+            <AnimeCard widthImage={cardWidth} show={loading} anime={item} />
+          </Animated.View>
+        )}
+        ListEmptyComponent={
+          <>
+            {loading ? (
+              <>
+                <ColumnGapAnimeCardSkeleton
+                  cardWidth={cardWidth}
+                  columnGap={columnGap}
+                />
+                <ColumnGapAnimeCardSkeleton
+                  cardWidth={cardWidth}
+                  columnGap={columnGap}
+                />
+                <ColumnGapAnimeCardSkeleton
+                  cardWidth={cardWidth}
+                  columnGap={columnGap}
+                />
+              </>
+            ) : (
+              <ListEmpty
+                colorIcon="#e5e7eb"
+                title="No Results found"
+                sizeIcon={100}
+              />
+            )}
+          </>
+        }
+        className="grid-cols-2"
+        style={{
+          paddingInline: paddingHorizontal,
+        }}
+        horizontal={false}
+        contentContainerStyle={{
+          gap: 15,
+        }}
+        columnWrapperStyle={{
+          gap: 15,
+        }}
+        numColumns={2}
+      />
     </View>
   );
 };

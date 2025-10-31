@@ -3,6 +3,7 @@ import { Response } from "@/services/models/response";
 import useFetch from "@/services/useFetch";
 import React from "react";
 import { FlatList, ScrollView, View } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 import AnimeCard from "./AnimeCard";
 import { ThemedText } from "./themed-text";
 import AnimeCardSkeleton from "./ui/skeletons/AnimeCardSkeleton";
@@ -14,7 +15,9 @@ export function SectionFlatListHorizontalAnimes({
   title: string;
   fetchFunction: () => Promise<Response<DataAnime>>;
 }) {
-  const { data, error, loading } = useFetch<Response<DataAnime>>(fetchFunction);
+  const { data, error, loading } = useFetch<Response<DataAnime>>({
+    fetchFunction,
+  });
 
   return (
     <View>
@@ -40,7 +43,11 @@ export function SectionFlatListHorizontalAnimes({
           showsHorizontalScrollIndicator={false}
           data={data?.data}
           keyExtractor={(item) => item.title}
-          renderItem={({ item }) => <AnimeCard anime={item} />}
+          renderItem={({ item, index }) => (
+            <Animated.View entering={FadeIn.duration(500)}>
+              <AnimeCard anime={item} />
+            </Animated.View>
+          )}
           horizontal={true}
           ItemSeparatorComponent={() => <View className="h-1 mx-2"></View>}
         />

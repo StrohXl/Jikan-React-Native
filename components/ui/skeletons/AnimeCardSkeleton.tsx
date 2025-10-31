@@ -3,8 +3,8 @@ import React from "react";
 import { View } from "react-native";
 
 const SkeletonProps = {
-  backgroundColor: "#d4d4d4",
-  colorMode: "light",
+  backgroundColor: "#343434",
+  colorMode: "dark",
 } as const;
 
 const AnimeCardSkeleton = ({

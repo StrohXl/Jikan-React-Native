@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
-  StyleSheet,
+  useWindowDimensions,
   View,
 } from "react-native";
 
@@ -15,12 +15,15 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function AnimeById() {
   const { id } = useLocalSearchParams();
-  const { data, loading } = useFetch(() => fetchAnimeById(Number(id)));
+  const { data, loading } = useFetch({
+    fetchFunction: () => fetchAnimeById(Number(id)),
+  });
+  const { width } = useWindowDimensions();
 
   const anime = data?.data;
 
   return (
-    <ScrollView className="flex-1 min-h-full">
+    <ScrollView className="flex-1 min-h-full bg-[#151718]">
       {loading ? (
         <View className="min-h-full w-full items-center justify-center">
           <ActivityIndicator color={"#fff"} size={40} />
@@ -32,14 +35,18 @@ export default function AnimeById() {
               source={{
                 uri: anime?.images.webp.large_image_url,
                 width: 300,
-                height: 450,
+                height: width,
               }}
               className="w-full"
             />
             <LinearGradient
-              colors={["#151718", "transparent", "#151718aa", "#151718fc"]}
-              style={styles.gradient}
-              locations={[0, 0.3, 0.7, 0.98]}
+              colors={["#000", "rgba(0,0,0,0.1)"]}
+              locations={[0, 1]}
+              className="absolute top-0 w-full h-[50%]"
+            />
+            <LinearGradient
+              colors={["rgba(0,0,0,0.1)", "#151718"]}
+              className="absolute bottom-0 w-full h-[50%]"
             />
           </View>
           <ThemedView className="pt-4 px-5">
@@ -53,14 +60,3 @@ export default function AnimeById() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  gradient: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: "100%",
-    width: "100%",
-  },
-});

@@ -24,6 +24,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider
       style={{
+        paddingTop: insets.top,
         paddingBottom: insets.bottom,
         backgroundColor: colorScheme === "dark" ? "#151718" : "#fff",
       }}

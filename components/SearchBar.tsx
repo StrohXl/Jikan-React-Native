@@ -1,11 +1,8 @@
 import React from "react";
 import {
-  Keyboard,
-  KeyboardAvoidingView,
   TextInput,
   TextInputChangeEvent,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { IconSymbol } from "./ui/icon-symbol";
@@ -28,31 +25,31 @@ const SearchBar = ({
   onPressClose?: () => void;
 }) => {
   return (
-    <KeyboardAvoidingView>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View className="bg-[#151718] gray-400 rounded-full ps-4 flex-row items-center">
-          <IconSymbol name="search" color={"#e5e7eb"} />
-          <TextInput
-            returnKeyType="search"
-            ref={ref}
-            value={text}
-            placeholder={placeholder}
-            placeholderTextColor={"#9ca3af"}
-            className="flex-1 ps-2 text-gray-200"
-            onChange={onChange}
-            onSubmitEditing={onSubmitEditing}
-            defaultValue={defaultValue}
-          />
-          {text !== "" && (
-            <TouchableOpacity onPress={onPressClose}>
-              <View className="justify-center px-4" style={{ height: 40 }}>
-                <IconSymbol name="close" size={18} color={"#e5e7eb"} />
-              </View>
-            </TouchableOpacity>
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    <View
+      style={{ borderWidth: 1, borderColor: "#9ca3af" }}
+      className="bg-gray-900 gray-400 rounded-full ps-4 px-1 flex-row items-center"
+    >
+      <IconSymbol name="search" size={20} color={"#9ca3af"} />
+      <TextInput
+        returnKeyType="search"
+        ref={ref}
+        value={text}
+        placeholder={placeholder}
+        style={{ padding: 0, height: 32 }}
+        placeholderTextColor={"#9ca3af"}
+        className="flex-1 ps-2 text-gray-200"
+        onChange={onChange}
+        onSubmitEditing={onSubmitEditing}
+        defaultValue={defaultValue}
+      />
+      {text !== "" && (
+        <TouchableOpacity onPress={onPressClose}>
+          <View className="justify-center px-4" style={{ height: 32 }}>
+            <IconSymbol name="close" size={16} color={"#9ca3af"} />
+          </View>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 

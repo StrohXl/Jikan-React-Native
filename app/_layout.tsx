@@ -26,7 +26,7 @@ export default function RootLayout() {
       style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
-        backgroundColor: colorScheme === "dark" ? "#151718" : "#fff",
+        backgroundColor: colorScheme === "dark" ? "#111827" : "#fff",
       }}
     >
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>

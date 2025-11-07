@@ -10,10 +10,20 @@ const ColumnGapAnimeCardSkeleton = ({
   cardWidth: number;
 }) => {
   return (
-    <View className="flex-row" style={{ columnGap: columnGap }}>
-      <AnimeCardSkeleton widthImage={cardWidth} />
-      <AnimeCardSkeleton widthImage={cardWidth} />
-    </View>
+    <>
+      <View className="flex-row" style={{ columnGap: columnGap }}>
+        <AnimeCardSkeleton widthImage={cardWidth} />
+        <AnimeCardSkeleton widthImage={cardWidth} />
+      </View>
+      <View className="flex-row" style={{ columnGap: columnGap }}>
+        <AnimeCardSkeleton widthImage={cardWidth} />
+        <AnimeCardSkeleton widthImage={cardWidth} />
+      </View>
+      <View className="flex-row" style={{ columnGap: columnGap }}>
+        <AnimeCardSkeleton widthImage={cardWidth} />
+        <AnimeCardSkeleton widthImage={cardWidth} />
+      </View>
+    </>
   );
 };
 

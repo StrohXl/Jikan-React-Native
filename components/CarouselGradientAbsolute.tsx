@@ -1,10 +1,9 @@
 import { DataAnime } from "@/services/models/dataAnime";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { useWindowDimensions, View } from "react-native";
+import { Image, useWindowDimensions, View } from "react-native";
 import Animated, { interpolate } from "react-native-reanimated";
-import { TAnimationStyle } from "react-native-reanimated-carousel";
-import { IconSymbol } from "./ui/icon-symbol";
+import Carousel, { TAnimationStyle } from "react-native-reanimated-carousel";
 
 const CarouselGradientAbsolute = ({
   animes,
@@ -45,14 +44,30 @@ const CarouselGradientAbsolute = ({
       style={{ height: width }}
     >
       <View>
-        <Animated.View
-          style={[
-            headerAnimatedStyle,
-            { height: width, backgroundColor: "red" },
-          ]}
-        >
-          <IconSymbol size={310} color="#808080" name="chevron-left" />
-        </Animated.View>
+        <Carousel
+          autoPlayInterval={5000}
+          data={animes}
+          scrollAnimationDuration={3000}
+          height={width}
+          loop={true}
+          pagingEnabled={true}
+          snapEnabled={true}
+          width={width}
+          autoPlay={true}
+          style={{
+            width: width,
+          }}
+          renderItem={({ item }) => (
+            <Animated.View style={[headerAnimatedStyle, { height: width }]}>
+              <Image
+                source={{ uri: item.images.webp.large_image_url }}
+                width={width}
+                height={width}
+              />
+            </Animated.View>
+          )}
+          customAnimation={animationStyle}
+        />
         <LinearGradient
           colors={["#000", "rgba(0,0,0,0.1)"]}
           className="absolute top-0 w-full h-[50%]"

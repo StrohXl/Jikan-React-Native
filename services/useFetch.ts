@@ -36,5 +36,5 @@ export default function useFetch<T>({
     }
   }, [autoFetch]);
 
-  return { data, loading, error, fetchData, reset };
+  return { data, loading, setLoading, error, fetchData, reset };
 }

@@ -27,11 +27,11 @@ const Tag = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`flex-row items-center gap-1 justify-center bg-gray-900 ${status && "!bg-gray-700"} rounded-full px-5`}
+      className={`flex-row items-center gap-1 justify-center bg-gray-800 ${status && "!bg-gray-600"} rounded-full px-5`}
       style={{
         borderWidth: 1,
         height,
-        borderColor: status ? "#374151" : "#9ca3af",
+        borderColor: status ? "#374151" : "#374151 ",
       }}
     >
       <ThemedText

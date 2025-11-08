@@ -1,11 +1,11 @@
 import { BottomSheetHandle } from "@/components/bottom-sheet/types";
 
 export function closeBottomSheetRefs({
-  bottomSheetRefs,
+  refBottomSheetFilterArray,
   index,
 }: {
   index: number;
-  bottomSheetRefs: React.RefObject<BottomSheetHandle | null>[];
+  refBottomSheetFilterArray: React.RefObject<BottomSheetHandle | null>[];
 }) {
-  bottomSheetRefs[index].current?.closeSheet();
+  refBottomSheetFilterArray[index].current?.closeSheet();
 }

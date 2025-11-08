@@ -12,7 +12,7 @@ import React, {
 import { fetchAnime, fetchGetGenres } from "@/services/api";
 import { ResponseAnimes } from "@/services/models/responseAnimes";
 
-interface Genres {
+export interface Genres {
   title: string;
   value: string;
   status: boolean;
@@ -45,7 +45,13 @@ const UseContextSearch = createContext<TypeContextSearch | undefined>(
   undefined
 );
 
-const ContextSearch = ({ children }: { children: ReactNode }) => {
+const ContextSearch = ({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: { genres: string };
+}) => {
   const [text, setText] = useState<string>("");
   const [textSearch, setTextSearch] = useState<string>("");
   const [filters, setFilters] = useState<FilterParamsType[]>([
@@ -131,7 +137,7 @@ const ContextSearch = ({ children }: { children: ReactNode }) => {
           value: "favorites",
         },
       ],
-      height: 340,
+      height: 360,
     },
     {
       title: "Sort",
@@ -162,11 +168,15 @@ const ContextSearch = ({ children }: { children: ReactNode }) => {
     },
     {} as { [key: string]: any }
   );
+  const paramGenreValue = params?.genres !== "undefined" ? params.genres : "";
+  const paramGenreStatus = params?.genres !== "undefined" ? true : false;
+
+  console.log({ paramGenreStatus, paramGenreValue });
 
   const [genres, setGenres] = useState<Genres>({
     title: "Genres",
-    value: "",
-    status: false,
+    value: paramGenreValue,
+    status: paramGenreStatus,
     values: [],
     height: 500,
   });

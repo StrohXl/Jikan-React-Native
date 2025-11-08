@@ -9,27 +9,79 @@ import { FlatList, View } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
 import { useTabBar } from "./_layout";
 
-const Schedule = () => {
-  const days: [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ] = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
-  const today = new Date().getDay();
-  const [day, setDay] = useState(days[today]);
+type ArrayDays = [
+  {
+    day: "monday";
+    width: number;
+  },
+  {
+    day: "tuesday";
+    width: number;
+  },
+  {
+    day: "wednesday";
+    width: number;
+  },
+  {
+    day: "thursday";
+    width: number;
+  },
+  {
+    day: "friday";
+    width: number;
+  },
+  {
+    day: "saturday";
+    width: number;
+  },
+  {
+    day: "sunday";
+    width: number;
+  },
+];
 
+type Day =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
+const Schedule = () => {
+  const today = new Date().getDay() - 1;
+  const arrayDays: ArrayDays = [
+    {
+      day: "monday",
+      width: 94,
+    },
+    {
+      day: "tuesday",
+      width: 76.3,
+    },
+    {
+      day: "wednesday",
+      width: 80.3,
+    },
+    {
+      day: "thursday",
+      width: 92.3,
+    },
+    {
+      day: "friday",
+      width: 91,
+    },
+    {
+      day: "saturday",
+      width: 99.3,
+    },
+    {
+      day: "sunday",
+      width: 89.7,
+    },
+  ];
+  const [day, setDay] = useState<Day>(arrayDays[today].day);
   const flatListRef = useRef<FlatList>(null);
 
   const {
@@ -40,11 +92,32 @@ const Schedule = () => {
     fetchFunction: () => fetchRecentEpisodes({ params: { filter: day } }),
   });
 
+  const { setTabBarVisible } = useTabBar();
+
+  const getItemLayout = (
+    data: ArrayLike<any> | null | undefined,
+    index: number
+  ) => {
+    const findIndex = arrayDays.findIndex((item) => item === arrayDays[today]);
+    const length = arrayDays[index].width + (findIndex === index ? 40 : 0) + 10;
+    return {
+      length, // ancho + margin
+      offset: arrayDays
+        .slice(0, index)
+        .reduce((total, item) => total + length + 10, 0),
+      index,
+    };
+  };
+
+  const changeDay = (index: number) => {
+    setDay(arrayDays[index].day);
+  };
+
   useEffect(() => {
     fetchData();
+    const indexDays = arrayDays.findIndex((item) => item.day === day);
+    flatListRef.current?.scrollToIndex({ index: indexDays });
   }, [day]);
-
-  const { setTabBarVisible } = useTabBar();
 
   return (
     <FlatList
@@ -53,6 +126,7 @@ const Schedule = () => {
       }
       style={{ paddingInline: 10, paddingBottom: 20 }}
       data={animes?.data}
+      className="bg-gray-950"
       ListHeaderComponent={
         <>
           <View className="mt-10">
@@ -63,17 +137,18 @@ const Schedule = () => {
           <View className="mb-[10px] mt-[20px]">
             <FlatList
               ref={flatListRef}
-              data={days}
+              data={arrayDays}
               showsHorizontalScrollIndicator={false}
               horizontal={true}
               scrollEnabled={loading ? false : true}
               contentContainerStyle={{ gap: 10 }}
-              keyExtractor={(item) => item}
+              keyExtractor={(item) => item.day}
+              getItemLayout={getItemLayout}
               renderItem={({ item, index }) => (
                 <Tag
-                  onPress={() => !loading && setDay(item)}
-                  title={`${item} ${today === index ? "Today" : ""}`}
-                  status={item === day}
+                  onPress={() => changeDay(index)}
+                  title={`${item.day} ${today === index ? " Today" : ""}`}
+                  status={day === item.day}
                 />
               )}
             ></FlatList>

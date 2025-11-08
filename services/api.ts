@@ -73,7 +73,8 @@ export const fetchRecentEpisodes = async ({
       | "thursday"
       | "friday"
       | "saturday"
-      | "sunday";
+      | "sunday"
+      | string;
   };
 }) => {
   const urlSearchParams = new URLSearchParams(params);

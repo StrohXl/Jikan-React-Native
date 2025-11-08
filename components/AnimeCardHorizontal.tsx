@@ -65,9 +65,16 @@ const AnimeCardHorizontal = ({
               >
                 {anime.episodes && `${anime.episodes + " Episodes"}`}
               </ThemedText>
-              <View className="flex-row gap-2">
+              <View className="flex-row flex-wrap gap-2">
                 {anime.genres.map((item) => (
-                  <Link href={"/"} key={item.name} asChild>
+                  <Link
+                    href={{
+                      pathname: "/search",
+                      params: { genres: item.mal_id },
+                    }}
+                    key={item.name}
+                    asChild
+                  >
                     <ThemedText className="!text-sm" type="link">
                       {item.name}
                     </ThemedText>

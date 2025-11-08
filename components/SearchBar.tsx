@@ -27,7 +27,7 @@ const SearchBar = ({
   return (
     <View
       style={{ borderWidth: 1, borderColor: "#9ca3af" }}
-      className="bg-gray-900 gray-400 rounded-full ps-4 px-1 flex-row items-center"
+      className="bg-gray-950 gray-400 rounded-full ps-4 px-1 flex-row items-center"
     >
       <IconSymbol name="search" size={20} color={"#9ca3af"} />
       <TextInput

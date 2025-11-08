@@ -24,6 +24,7 @@ const Top = () => {
           </ThemedText>
         </View>
       )}
+      className="bg-gray-950"
       keyExtractor={(item) => item.title}
       contentContainerStyle={{ gap: 20, paddingBottom: 20 }}
       renderItem={({ item, index }) => (

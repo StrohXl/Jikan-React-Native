@@ -69,11 +69,11 @@ const CarouselGradientAbsolute = ({
           customAnimation={animationStyle}
         />
         <LinearGradient
-          colors={["#000", "rgba(0,0,0,0.1)"]}
+          colors={["#030712", "rgba(0,0,0,0.1)"]}
           className="absolute top-0 w-full h-[50%]"
         />
         <LinearGradient
-          colors={["rgba(0,0,0,0.1)", "rgba(0,0,0)"]}
+          colors={["rgba(0,0,0,0.1)", "#030712"]}
           className="absolute bottom-0 w-full h-[50%]"
         />
       </View>

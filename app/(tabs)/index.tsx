@@ -45,7 +45,7 @@ export default function HomeScreen() {
   return (
     <Animated.ScrollView
       ref={scrollRef}
-      className="flex-[1] min-h-full relative"
+      className="flex-[1] min-h-full relative bg-gray-950"
       contentContainerStyle={{ paddingBottom: 20 }}
       scrollEventThrottle={16}
       onScroll={(event) =>
@@ -64,8 +64,8 @@ export default function HomeScreen() {
         <View className="max-w-[300] mx-auto w-full mt-10">
           <Pressable onPress={() => router.push("/search")}>
             <View
-              style={{ borderWidth: 1, borderColor: "#9ca3af" }}
-              className="bg-gray-900 py-2 gap-2 gray-400 rounded-full ps-4 px-1 flex-row items-center"
+              style={{ borderWidth: 1, borderColor: "#374151" }}
+              className="bg-gray-950 py-2 gap-2 gray-400 rounded-full ps-4 px-1 flex-row items-center"
             >
               <IconSymbol name="search" color={"#9ca3af"} />
               <ThemedText className="!text-sm" style={{ color: "#9ca3af" }}>

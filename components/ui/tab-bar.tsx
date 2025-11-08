@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { View } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import TabBarIcon from "./tab-bar-icon";
 
 const TabBar = ({
@@ -11,10 +11,11 @@ const TabBar = ({
   isTabBarVisible: boolean;
 }) => {
   const { state, navigation } = props;
+
   return (
-    <View
+    <Animated.View
+      entering={FadeInDown}
       className={`absolute self-center flex-row overflow-hidden p-1 justify-between w-[80%] bottom-[15] bg-gray-900 rounded-full`}
-      style={{ opacity: isTabBarVisible ? 1 : 0 }}
     >
       {state.routes.map(({ name }, index) => (
         <TabBarIcon
@@ -33,7 +34,7 @@ const TabBar = ({
           focused={state.index === index}
         />
       ))}
-    </View>
+    </Animated.View>
   );
 };
 

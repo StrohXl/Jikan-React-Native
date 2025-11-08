@@ -1,23 +1,31 @@
-import { ValueFilters } from "@/models/valueFilters";
-import { ContentChildrenFiltersMapParams } from "../components/ContentChildrenFiltersBottomSheet";
+import { BottomSheetHandle } from "@/components/bottom-sheet/types";
+import { FilterParamsType } from "@/models/filters";
+import { ScrollView } from "react-native";
 import { closeBottomSheetRefs } from "./closeBottomSheetRefs";
 
-export type AddTagParams = {
-  value: ValueFilters;
-} & Omit<ContentChildrenFiltersMapParams, "item">;
-
-export function addTag({ paramAddTag }: { paramAddTag: AddTagParams }) {
-  const { bottomSheetRefs, filters, index, refScrollView, setFilters, value } =
-    paramAddTag;
-
-  closeBottomSheetRefs({ bottomSheetRefs, index });
+export function addTag({
+  index,
+  refBottomSheetFilterArray,
+  setFilters,
+  filters,
+  refScrollView,
+  value,
+}: {
+  index: number;
+  refBottomSheetFilterArray: React.RefObject<BottomSheetHandle | null>[];
+  filters: FilterParamsType[];
+  setFilters: React.Dispatch<React.SetStateAction<FilterParamsType[]>>;
+  refScrollView: React.RefObject<ScrollView | null>;
+  value: string;
+}) {
+  closeBottomSheetRefs({ refBottomSheetFilterArray, index });
   setFilters((prevFilters) =>
     prevFilters.map((item) => {
       if (item === filters[index]) {
         return {
           ...item,
           status: item.value === value && item.status ? false : true,
-          value,
+          value: value,
         };
       }
       return { ...item };

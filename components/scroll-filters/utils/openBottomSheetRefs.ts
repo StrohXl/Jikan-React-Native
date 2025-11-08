@@ -1,11 +1,8 @@
 import { BottomSheetHandle } from "@/components/bottom-sheet/types";
-import { FilterParamsType } from "@/models/filters";
 
 export interface OpenBottomSheetRefsParams {
   index: number;
-  bottomSheetRefs: React.RefObject<BottomSheetHandle | null>[];
-  setTitleBottomSheet: React.Dispatch<React.SetStateAction<string>>;
-  filters: FilterParamsType[];
+  refBottomSheetFilterArray: React.RefObject<BottomSheetHandle | null>[];
   refBottomSheetFilters: React.RefObject<BottomSheetHandle | null>;
 }
 
@@ -14,15 +11,7 @@ export function openBottomSheetRefs({
 }: {
   params: OpenBottomSheetRefsParams;
 }) {
-  const {
-    bottomSheetRefs,
-    filters,
-    index,
-    refBottomSheetFilters,
-    setTitleBottomSheet,
-  } = params;
-
+  const { refBottomSheetFilterArray, index, refBottomSheetFilters } = params;
   refBottomSheetFilters.current?.closeSheet();
-  setTitleBottomSheet(filters[index].title);
-  bottomSheetRefs[index].current?.openSheet();
+  refBottomSheetFilterArray[index].current?.openSheet();
 }

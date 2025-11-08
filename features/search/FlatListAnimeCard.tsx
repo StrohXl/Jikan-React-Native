@@ -16,7 +16,7 @@ const FlatListAnimeCard = ({
   const columnGap = 15;
   const cardWidth = (width - paddingHorizontal * 2 - columnGap) / 2;
 
-  const { filters, fetchData, textSearch, loadingData, error, data } =
+  const { filters, fetchData, textSearch, loadingData, error, data, genres } =
     useContextSearch();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const FlatListAnimeCard = ({
       offset: 0,
       animated: false,
     });
-  }, [filters]);
+  }, [filters, genres.value, genres.status]);
 
   return (
     <FlatList
@@ -33,6 +33,7 @@ const FlatListAnimeCard = ({
       data={error ? [] : loadingData ? [] : data?.data}
       scrollEnabled={loadingData ? false : true}
       keyExtractor={(item) => item.title}
+      className="bg-gray-950"
       ListHeaderComponent={
         <ThemedText
           type="defaultSemiBold"

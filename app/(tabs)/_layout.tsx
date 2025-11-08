@@ -17,11 +17,9 @@ export default function TabLayout() {
         screenOptions={{
           headerShown: false,
         }}
-        tabBar={(props) =>
-          isTabBarVisible ? (
-            <TabBar props={props} isTabBarVisible={isTabBarVisible} />
-          ) : null
-        }
+        tabBar={(props) => (
+          <TabBar props={props} isTabBarVisible={isTabBarVisible} />
+        )}
       >
         <Tabs.Screen name="index" options={{ title: "Home" }} />
         <Tabs.Screen name="schedule" options={{ title: "Schedule" }} />

@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import React from "react";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import React, { useEffect } from "react";
+import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
 import TabBarIcon from "./tab-bar-icon";
 
 const TabBar = ({
@@ -12,10 +12,23 @@ const TabBar = ({
 }) => {
   const { state, navigation } = props;
 
+  const opacity = useSharedValue(1);
+  const translateY = useSharedValue(0);
+
+  useEffect(() => {
+    if (!isTabBarVisible) {
+      translateY.value = withSpring(100, { duration: 800 });
+      opacity.value = withSpring(0, { duration: 800 });
+    } else {
+      opacity.value = withSpring(1, { duration: 800 });
+      translateY.value = withSpring(0, { duration: 800 });
+    }
+  }, [isTabBarVisible]);
+
   return (
     <Animated.View
-      entering={FadeInDown}
-      className={`absolute self-center flex-row overflow-hidden p-1 justify-between w-[80%] bottom-[15] bg-gray-900 rounded-full`}
+      style={{ opacity, transform: [{ translateY }] }}
+      className={`absolute self-center flex-row overflow-hidden w-[80%] p-1 justify-between bottom-[15] bg-gray-900 rounded-full`}
     >
       {state.routes.map(({ name }, index) => (
         <TabBarIcon

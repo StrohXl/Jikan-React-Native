@@ -1,3 +1,4 @@
+import { AnimeRecommendations } from "@/services/models/AnimeRecommedations";
 import { DataAnime } from "@/services/models/dataAnime";
 import { Response } from "@/services/models/response";
 import useFetch from "@/services/useFetch";
@@ -13,14 +14,16 @@ export function SectionFlatListHorizontalAnimes({
   fetchFunction,
 }: {
   title: string;
-  fetchFunction: () => Promise<Response<DataAnime>>;
+  fetchFunction: () => Promise<Response<DataAnime | AnimeRecommendations>>;
 }) {
-  const { data, error, loading } = useFetch<Response<DataAnime>>({
+  const { data, error, loading } = useFetch<
+    Response<DataAnime | AnimeRecommendations>
+  >({
     fetchFunction,
   });
 
   return (
-    <View>
+    <View className="mt-4">
       <ThemedText type="subtitle" className="mb-4">
         {title}
       </ThemedText>
@@ -43,7 +46,7 @@ export function SectionFlatListHorizontalAnimes({
           showsHorizontalScrollIndicator={false}
           data={data?.data}
           keyExtractor={(item) => item.title}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <Animated.View entering={FadeIn.duration(500)}>
               <AnimeCard anime={item} />
             </Animated.View>

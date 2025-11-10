@@ -27,7 +27,7 @@ const ListHeader = ({
   return (
     <>
       <View className="mx-auto w-full mt-6 items-center  gap-4 flex-row">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.push("/")}>
           <IconSymbol color={"#fff"} name="arrow-back" />
         </TouchableOpacity>
         <View className="flex-[1]">

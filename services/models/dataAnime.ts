@@ -29,7 +29,16 @@ export interface DataAnime {
   title_english: string;
   title_japanese: string;
   title_synonyms: [string];
-  type: "TV";
+  type:
+    | "TV"
+    | "Movie"
+    | "OVA"
+    | "Special"
+    | "Ona"
+    | "Music"
+    | "CM"
+    | "PV"
+    | "TV Special";
   source: string;
   episodes: number;
   status: "Finished Airing";

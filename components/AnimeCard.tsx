@@ -1,3 +1,4 @@
+import { AnimeRecommendations } from "@/services/models/AnimeRecommedations";
 import { DataAnime } from "@/services/models/dataAnime";
 import { Link } from "expo-router";
 import React from "react";
@@ -8,7 +9,7 @@ const AnimeCard = ({
   anime,
   widthImage = 200,
 }: {
-  anime: DataAnime;
+  anime: DataAnime | AnimeRecommendations;
   widthImage?: number;
 }) => {
   const height = widthImage / 0.7;

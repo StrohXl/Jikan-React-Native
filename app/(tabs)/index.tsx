@@ -76,7 +76,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="gap-6 relative z-10 pt-10" style={{ paddingInline: 10 }}>
+      <View className="relative z-10 pt-4" style={{ paddingInline: 10 }}>
         <SectionFlatListHorizontalAnimes
           fetchFunction={() =>
             fetchAnime({

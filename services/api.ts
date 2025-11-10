@@ -1,5 +1,6 @@
 import { Genre } from "@/models/genres";
 import { FetchAnimeParams } from "../models/fetchAnimeParams";
+import { AnimeRecommendations } from "./models/AnimeRecommedations";
 import { DataAnime } from "./models/dataAnime";
 import { FetchTopAnimeParams } from "./models/fetchTopAnimeParams";
 import { ResponseAnimes } from "./models/responseAnimes";
@@ -105,4 +106,25 @@ export const fetchGetGenres = async () => {
   }
   const { data }: { data: Genre[] } = await response.json();
   return data;
+};
+
+export const fetchAnimeByIdRecommendations = async ({
+  id,
+}: {
+  id: string | string[];
+}) => {
+  const endPoint = `/anime/${id}/recommendations`;
+  const url = `${baseUrl + endPoint}`;
+  const response = await fetch(url, {
+    method: "GET",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch anime", { cause: response.statusText });
+  }
+  const data: { data: { entry: AnimeRecommendations }[] } =
+    await response.json();
+  const newData: AnimeRecommendations[] = data.data.map((item, index) => ({
+    ...item.entry,
+  }));
+  return { data: newData.slice(0, 10) };
 };

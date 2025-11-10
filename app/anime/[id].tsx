@@ -1,8 +1,9 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { fetchAnimeById } from "@/services/api";
+import { fetchAnimeById, fetchAnimeByIdRecommendations } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { Link, useLocalSearchParams } from "expo-router";
+import * as ScreenOrientation from "expo-screen-orientation";
 import {
   ActivityIndicator,
   Image,
@@ -11,18 +12,37 @@ import {
   View,
 } from "react-native";
 
+import { SectionFlatListHorizontalAnimes } from "@/components/SectionFlatListHorizontalAnimes";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import Tag from "@/components/ui/tag";
 import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
+import YoutubePlayer from "react-native-youtube-iframe";
 
 export default function AnimeById() {
   const { id } = useLocalSearchParams();
+  const [fullScreen, setFullScreen] = useState(false);
+
+  // Fetch Anime By Id
   const { data, loading } = useFetch({
     fetchFunction: () => fetchAnimeById(Number(id)),
   });
-  const { width } = useWindowDimensions();
 
+  const { width } = useWindowDimensions();
   const anime = data?.data;
+  const videoId = anime?.trailer.embed_url
+    ? anime?.trailer.embed_url.split("/embed/")[1].split("?")[0]
+    : "";
+
+  const onFullScreen = () => {
+    console.log(fullScreen);
+    if (fullScreen) {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
+    } else {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    }
+    setFullScreen((prev) => !prev);
+  };
 
   return (
     <ScrollView className="flex-1 min-h-full bg-gray-950">
@@ -51,7 +71,7 @@ export default function AnimeById() {
               className="absolute bottom-0 w-full h-[50%]"
             />
           </View>
-          <ThemedView className="pt-4 px-5 ">
+          <ThemedView className="py-4" style={{ paddingInline: 10 }}>
             <ThemedText type="subtitle">{anime?.title}</ThemedText>
             <View className="flex-row gap-2">
               {anime?.score && (
@@ -66,6 +86,24 @@ export default function AnimeById() {
                 </View>
               )}
             </View>
+            <View className="mt-2">
+              <ThemedText type="default">Type: {anime?.type}</ThemedText>
+            </View>
+            {anime?.episodes && anime.type !== "Movie" && (
+              <View className="mt-2">
+                <ThemedText type="default">
+                  {anime.episodes} Episodes
+                </ThemedText>
+              </View>
+            )}
+            {anime?.duration && anime.type === "Movie" && (
+              <View className="mt-2">
+                <ThemedText type="default">
+                  Duration: {anime.duration}
+                </ThemedText>
+              </View>
+            )}
+
             <View className="flex-row gap-2 mt-4 flex-wrap">
               {anime?.genres.map((item) => (
                 <Link
@@ -83,6 +121,25 @@ export default function AnimeById() {
             <ThemedText type="default" className="mt-4">
               {anime?.synopsis}
             </ThemedText>
+            {videoId !== "" && (
+              <View className="mt-4">
+                <ThemedText type="subtitle" className="mb-4">
+                  Trailer:
+                </ThemedText>
+                <View className="rounded-lg overflow-hidden">
+                  <YoutubePlayer
+                    onFullScreenChange={onFullScreen}
+                    height={(width - 20) / 1.78}
+                    videoId={videoId}
+                  />
+                </View>
+              </View>
+            )}
+
+            <SectionFlatListHorizontalAnimes
+              title="Recommended Animes"
+              fetchFunction={() => fetchAnimeByIdRecommendations({ id })}
+            />
           </ThemedView>
         </>
       )}

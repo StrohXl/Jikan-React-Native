@@ -26,9 +26,9 @@ const ListHeader = ({
 
   return (
     <>
-      <View className="mx-auto w-full mt-6 items-center  gap-4 flex-row">
+      <View className="mx-auto w-full items-center  gap-4 flex-row">
         <TouchableOpacity onPress={() => router.push("/")}>
-          <IconSymbol color={"#fff"} name="arrow-back" />
+          <IconSymbol name="arrow-back" />
         </TouchableOpacity>
         <View className="flex-[1]">
           <SearchBar

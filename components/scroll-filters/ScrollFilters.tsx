@@ -68,7 +68,7 @@ const ScrollFilters = () => {
               className="py-1 px-1"
               onPress={() => refBottomSheetFilters.current?.openSheet()}
             >
-              <IconSymbol name="tune" color={"#fff"} />
+              <IconSymbol name="tune" />
             </TouchableOpacity>
             {filters.map(
               (item, index) =>

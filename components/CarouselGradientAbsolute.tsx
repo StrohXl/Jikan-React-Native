@@ -1,14 +1,11 @@
 import { DataAnime } from "@/services/models/dataAnime";
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Image, useWindowDimensions, View } from "react-native";
-import Animated, { interpolate } from "react-native-reanimated";
+import { Image, useWindowDimensions } from "react-native";
+import { interpolate } from "react-native-reanimated";
 import Carousel, { TAnimationStyle } from "react-native-reanimated-carousel";
+import ParallaxScrollGradient from "./ParallaxScrollGradient";
 
-const CarouselGradientAbsolute = ({
-  animes,
-  headerAnimatedStyle,
-}: {
+type CarouselProps = {
   animes: DataAnime[];
   headerAnimatedStyle?: {
     transform: (
@@ -22,7 +19,12 @@ const CarouselGradientAbsolute = ({
         }
     )[];
   };
-}) => {
+};
+
+export default function CarouselGradientAbsolute({
+  animes,
+  headerAnimatedStyle,
+}: CarouselProps) {
   const animationStyle: TAnimationStyle = React.useCallback((value: number) => {
     "worklet";
 
@@ -39,46 +41,32 @@ const CarouselGradientAbsolute = ({
   const { width } = useWindowDimensions();
 
   return (
-    <View
-      className="absolute -z-10 w-full top-0 left-0"
-      style={{ height: width }}
+    <ParallaxScrollGradient
+      height={width}
+      headerAnimatedStyle={headerAnimatedStyle}
     >
-      <View>
-        <Carousel
-          autoPlayInterval={5000}
-          data={animes}
-          scrollAnimationDuration={3000}
-          height={width}
-          loop={true}
-          pagingEnabled={true}
-          snapEnabled={true}
-          width={width}
-          autoPlay={true}
-          style={{
-            width: width,
-          }}
-          renderItem={({ item }) => (
-            <Animated.View style={[headerAnimatedStyle, { height: width }]}>
-              <Image
-                source={{ uri: item.images.webp.large_image_url }}
-                width={width}
-                height={width}
-              />
-            </Animated.View>
-          )}
-          customAnimation={animationStyle}
-        />
-        <LinearGradient
-          colors={["#030712", "rgba(0,0,0,0.1)"]}
-          className="absolute top-0 w-full h-[50%]"
-        />
-        <LinearGradient
-          colors={["rgba(0,0,0,0.1)", "#030712"]}
-          className="absolute bottom-0 w-full h-[50%]"
-        />
-      </View>
-    </View>
+      <Carousel
+        autoPlayInterval={5000}
+        data={animes}
+        scrollAnimationDuration={3000}
+        height={width}
+        loop={true}
+        pagingEnabled={true}
+        snapEnabled={true}
+        width={width}
+        autoPlay={true}
+        style={{
+          width: width,
+        }}
+        renderItem={({ item }) => (
+          <Image
+            source={{ uri: item.images.webp.large_image_url }}
+            width={width}
+            height={width}
+          />
+        )}
+        customAnimation={animationStyle}
+      />
+    </ParallaxScrollGradient>
   );
-};
-
-export default CarouselGradientAbsolute;
+}

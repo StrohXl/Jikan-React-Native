@@ -7,16 +7,22 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import {
   ActivityIndicator,
   Image,
-  ScrollView,
   useWindowDimensions,
   View,
 } from "react-native";
 
+import ParallaxScrollGradient from "@/components/ParallaxScrollGradient";
 import { SectionFlatListHorizontalAnimes } from "@/components/SectionFlatListHorizontalAnimes";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import Tag from "@/components/ui/tag";
-import { LinearGradient } from "expo-linear-gradient";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { useState } from "react";
+import Animated, {
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollOffset,
+} from "react-native-reanimated";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 export default function AnimeById() {
@@ -28,6 +34,9 @@ export default function AnimeById() {
     fetchFunction: () => fetchAnimeById(Number(id)),
   });
 
+  const textColor = useThemeColor({}, "text");
+  const background = useThemeColor({}, "background");
+
   const { width } = useWindowDimensions();
   const anime = data?.data;
   const videoId = anime?.trailer.embed_url
@@ -35,7 +44,6 @@ export default function AnimeById() {
     : "";
 
   const onFullScreen = () => {
-    console.log(fullScreen);
     if (fullScreen) {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
     } else {
@@ -44,32 +52,52 @@ export default function AnimeById() {
     setFullScreen((prev) => !prev);
   };
 
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+  const scrollOffset = useScrollOffset(scrollRef);
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            scrollOffset.value / 3,
+            [-width, 0, width],
+            [-width / 2, 0, width * 0.75]
+          ),
+        },
+        {
+          scale: interpolate(scrollOffset.value, [-width, 0, width], [2, 1, 1]),
+        },
+      ],
+    };
+  });
+
   return (
-    <ScrollView className="flex-1 min-h-full bg-gray-950">
+    <Animated.ScrollView
+      className="flex-1 min-h-full"
+      style={{ backgroundColor: background }}
+    >
       {loading ? (
         <View className="min-h-full w-full items-center justify-center">
-          <ActivityIndicator color={"#fff"} size={40} />
+          <ActivityIndicator color={textColor} size={40} />
         </View>
       ) : (
         <>
-          <View className="relative">
-            <Image
-              source={{
-                uri: anime?.images.webp.large_image_url,
-                width: 300,
-                height: width,
-              }}
-              className="w-full"
-            />
-            <LinearGradient
-              colors={["#030712", "rgba(0,0,0,0.1)"]}
-              locations={[0, 1]}
-              className="absolute top-0 w-full h-[50%]"
-            />
-            <LinearGradient
-              colors={["rgba(0,0,0,0.1)", "#030712"]}
-              className="absolute bottom-0 w-full h-[50%]"
-            />
+          <View className="relative" style={{ height: width }}>
+            <ParallaxScrollGradient
+              headerAnimatedStyle={headerAnimatedStyle}
+              height={width}
+            >
+              <Image
+                source={{
+                  uri: anime?.images.webp.large_image_url,
+                  width: 300,
+                  height: width,
+                }}
+                className="w-full"
+              />
+            </ParallaxScrollGradient>
           </View>
           <ThemedView className="py-4" style={{ paddingInline: 10 }}>
             <ThemedText type="subtitle">{anime?.title}</ThemedText>
@@ -136,13 +164,15 @@ export default function AnimeById() {
               </View>
             )}
 
-            <SectionFlatListHorizontalAnimes
-              title="Recommended Animes"
-              fetchFunction={() => fetchAnimeByIdRecommendations({ id })}
-            />
+            <View className="mt-4">
+              <SectionFlatListHorizontalAnimes
+                title="Recommended Animes"
+                fetchFunction={() => fetchAnimeByIdRecommendations({ id })}
+              />
+            </View>
           </ThemedView>
         </>
       )}
-    </ScrollView>
+    </Animated.ScrollView>
   );
 }

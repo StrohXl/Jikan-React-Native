@@ -47,7 +47,7 @@ const BottomSheetGenres = ({
               colorIcon={
                 genres.value === `${item.mal_id}` && genres.status
                   ? "#16a34a"
-                  : "#fff"
+                  : undefined
               }
             />
           </View>

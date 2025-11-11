@@ -1,5 +1,6 @@
 import AnimeCardHorizontal from "@/components/AnimeCardHorizontal";
 import { ThemedText } from "@/components/themed-text";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { fetchTopAnimes } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import handleScrollHiddenTabBar from "@/utils/handleScrollHiddenTabBar";
@@ -10,12 +11,13 @@ import { useTabBar } from "./_layout";
 const Top = () => {
   const { data: animes } = useFetch({ fetchFunction: fetchTopAnimes });
   const { setTabBarVisible } = useTabBar();
+  const backgroundColor = useThemeColor({}, "background");
   return (
     <FlatList
       onScroll={(event) =>
         handleScrollHiddenTabBar({ event, setTabBarVisible })
       }
-      style={{ paddingInline: 10, paddingBottom: 20 }}
+      style={{ paddingInline: 10, paddingBottom: 20, backgroundColor }}
       data={animes?.data}
       ListHeaderComponent={() => (
         <View className="my-10">
@@ -24,7 +26,6 @@ const Top = () => {
           </ThemedText>
         </View>
       )}
-      className="bg-gray-950"
       keyExtractor={(item) => item.title}
       contentContainerStyle={{ gap: 20, paddingBottom: 20 }}
       renderItem={({ item, index }) => (

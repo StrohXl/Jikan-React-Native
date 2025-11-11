@@ -1,3 +1,4 @@
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React, { useEffect } from "react";
 import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
@@ -11,6 +12,7 @@ const TabBar = ({
   isTabBarVisible: boolean;
 }) => {
   const { state, navigation } = props;
+  const primaryColorTheme = useThemeColor({}, "primary");
 
   const opacity = useSharedValue(1);
   const translateY = useSharedValue(0);
@@ -27,8 +29,12 @@ const TabBar = ({
 
   return (
     <Animated.View
-      style={{ opacity, transform: [{ translateY }] }}
-      className={`absolute self-center flex-row overflow-hidden w-[80%] p-1 justify-between bottom-[15] bg-gray-900 rounded-full`}
+      style={{
+        opacity,
+        transform: [{ translateY }],
+        backgroundColor: primaryColorTheme,
+      }}
+      className={`absolute self-center flex-row overflow-hidden w-[80%] p-1 justify-between bottom-[15] rounded-full`}
     >
       {state.routes.map(({ name }, index) => (
         <TabBarIcon

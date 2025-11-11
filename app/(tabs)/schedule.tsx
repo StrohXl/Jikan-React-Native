@@ -1,6 +1,7 @@
 import AnimeCardHorizontal from "@/components/AnimeCardHorizontal";
 import { ThemedText } from "@/components/themed-text";
 import Tag from "@/components/ui/tag";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { fetchRecentEpisodes } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import handleScrollHiddenTabBar from "@/utils/handleScrollHiddenTabBar";
@@ -54,36 +55,37 @@ const Schedule = () => {
   const arrayDays: ArrayDays = [
     {
       day: "monday",
-      width: 94,
+      width: 90.3,
     },
     {
       day: "tuesday",
-      width: 76.3,
+      width: 92.7,
     },
     {
       day: "wednesday",
-      width: 80.3,
+      width: 113.7,
     },
     {
       day: "thursday",
-      width: 92.3,
+      width: 98.7,
     },
     {
       day: "friday",
-      width: 91,
+      width: 77.3,
     },
     {
       day: "saturday",
-      width: 99.3,
+      width: 95.7,
     },
     {
       day: "sunday",
-      width: 89.7,
+      width: 86,
     },
   ];
   const [day, setDay] = useState<Day>(arrayDays[today].day);
   const flatListRef = useRef<FlatList>(null);
 
+  const backgroundColor = useThemeColor({}, "background");
   const {
     data: animes,
     fetchData,
@@ -99,12 +101,19 @@ const Schedule = () => {
     index: number
   ) => {
     const findIndex = arrayDays.findIndex((item) => item === arrayDays[today]);
-    const length = arrayDays[index].width + (findIndex === index ? 40 : 0) + 10;
+    const length = arrayDays[index].width + 10;
+    console.log(
+      arrayDays.slice(0, index).reduce((total, item) => total + length, 0)
+    );
     return {
       length, // ancho + margin
       offset: arrayDays
         .slice(0, index)
-        .reduce((total, item) => total + length + 10, 0),
+        .reduce(
+          (total, item, index) =>
+            total + item.width + 10 + (index === findIndex ? 40.3 : 0),
+          0
+        ),
       index,
     };
   };
@@ -124,9 +133,8 @@ const Schedule = () => {
       onScroll={(event) =>
         handleScrollHiddenTabBar({ event, setTabBarVisible })
       }
-      style={{ paddingInline: 10, paddingBottom: 20 }}
+      style={{ paddingInline: 10, paddingBottom: 20, backgroundColor }}
       data={animes?.data}
-      className="bg-gray-950"
       ListHeaderComponent={
         <>
           <View className="mt-10">
@@ -147,7 +155,7 @@ const Schedule = () => {
               renderItem={({ item, index }) => (
                 <Tag
                   onPress={() => changeDay(index)}
-                  title={`${item.day} ${today === index ? " Today" : ""}`}
+                  title={`${item.day}${index === today ? " Today" : ""}`}
                   status={day === item.day}
                 />
               )}

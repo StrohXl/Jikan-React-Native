@@ -1,11 +1,8 @@
+import { useColorScheme } from "@/hooks/use-color-scheme.web";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { Skeleton } from "moti/skeleton";
 import React from "react";
 import { View } from "react-native";
-
-const SkeletonProps = {
-  backgroundColor: "#343434",
-  colorMode: "dark",
-} as const;
 
 const AnimeCardSkeleton = ({
   widthImage = 200,
@@ -14,6 +11,9 @@ const AnimeCardSkeleton = ({
   widthImage?: number;
   show?: boolean;
 }) => {
+  const colorTheme = useColorScheme() ?? "dark";
+  const dark = useThemeColor({}, "dark");
+
   const height = widthImage / 0.7;
   return (
     <View style={{ width: widthImage }}>
@@ -21,7 +21,8 @@ const AnimeCardSkeleton = ({
         show={show}
         width={widthImage}
         height={height}
-        {...SkeletonProps}
+        backgroundColor={dark}
+        colorMode={colorTheme}
       />
 
       <View className="mt-2">
@@ -30,7 +31,8 @@ const AnimeCardSkeleton = ({
           show={show}
           width={widthImage}
           height={25}
-          {...SkeletonProps}
+          backgroundColor={dark}
+          colorMode={colorTheme}
         />
       </View>
     </View>

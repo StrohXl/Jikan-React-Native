@@ -54,7 +54,7 @@ const BottomSheetFiltersArray = ({
                       colorIcon={
                         value === item.value && filters[index].status
                           ? "#16a34a"
-                          : "#fff"
+                          : undefined
                       }
                     />
                   </View>

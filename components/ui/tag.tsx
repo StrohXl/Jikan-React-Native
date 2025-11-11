@@ -1,3 +1,4 @@
+import { useThemeColor } from "@/hooks/use-theme-color";
 import React from "react";
 import { StyleProp, TextStyle, TouchableOpacity, View } from "react-native";
 import { ThemedText } from "../themed-text";
@@ -12,7 +13,7 @@ const Tag = ({
   nameIcon,
   sizeIcon,
   styleIcon,
-  colorIcon = "#fff",
+  colorIcon,
 }: {
   nameIcon?: NameMaterialIcons;
   showIcon?: boolean;
@@ -24,21 +25,27 @@ const Tag = ({
   colorIcon?: string;
 }) => {
   const height = 30;
+
+  const colorsTheme = {
+    primary: useThemeColor({}, "primary"),
+    background: useThemeColor({}, "background"),
+    dark: useThemeColor({}, "dark"),
+    darkLight: useThemeColor({}, "darkLight"),
+    text: useThemeColor({}, "text"),
+  };
+
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`flex-row items-center gap-1 justify-center bg-gray-800 ${status && "!bg-gray-600"} rounded-full px-5`}
+      className={`flex-row  items-center gap-1 justify-center rounded-full px-5`}
       style={{
+        backgroundColor: !status ? colorsTheme.background : colorsTheme.primary,
         borderWidth: 1,
+        borderColor: !status ? colorsTheme.dark : colorsTheme.darkLight,
         height,
-        borderColor: status ? "#374151" : "#374151 ",
       }}
     >
-      <ThemedText
-        color={"#fff"}
-        className="capitalize !text-[15px]"
-        type="default"
-      >
+      <ThemedText className="capitalize !text-[15px]" type="default">
         {title}
       </ThemedText>
       {showIcon && (
@@ -53,7 +60,7 @@ const Tag = ({
             style={styleIcon}
             size={sizeIcon}
             name={nameIcon ?? "10k"}
-            color={colorIcon}
+            color={colorIcon ? colorIcon : colorsTheme.text}
           />
         </View>
       )}

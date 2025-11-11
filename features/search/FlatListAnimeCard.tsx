@@ -1,5 +1,6 @@
 import AnimeCard from "@/components/AnimeCard";
 import { ThemedText } from "@/components/themed-text";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import React, { useEffect } from "react";
 import { FlatList, useWindowDimensions } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
@@ -15,6 +16,7 @@ const FlatListAnimeCard = ({
   const paddingHorizontal = 10;
   const columnGap = 15;
   const cardWidth = (width - paddingHorizontal * 2 - columnGap) / 2;
+  const background = useThemeColor({}, "background");
 
   const { filters, fetchData, textSearch, loadingData, error, data, genres } =
     useContextSearch();
@@ -33,7 +35,6 @@ const FlatListAnimeCard = ({
       data={error ? [] : loadingData ? [] : data?.data}
       scrollEnabled={loadingData ? false : true}
       keyExtractor={(item) => item.title}
-      className="bg-gray-950"
       ListHeaderComponent={
         <ThemedText
           type="defaultSemiBold"
@@ -56,6 +57,7 @@ const FlatListAnimeCard = ({
       }
       style={{
         paddingInline: paddingHorizontal,
+        backgroundColor: background,
       }}
       horizontal={false}
       contentContainerStyle={{

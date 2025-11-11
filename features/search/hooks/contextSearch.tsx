@@ -171,8 +171,6 @@ const ContextSearch = ({
   const paramGenreValue = params?.genres !== "undefined" ? params.genres : "";
   const paramGenreStatus = params?.genres !== "undefined" ? true : false;
 
-  console.log({ paramGenreStatus, paramGenreValue });
-
   const [genres, setGenres] = useState<Genres>({
     title: "Genres",
     value: paramGenreValue,

@@ -1,7 +1,8 @@
 import CarouselGradientAbsolute from "@/components/CarouselGradientAbsolute";
+import SearchBar from "@/components/SearchBar";
 import { SectionFlatListHorizontalAnimes } from "@/components/SectionFlatListHorizontalAnimes";
 import { ThemedText } from "@/components/themed-text";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { fetchAnime, fetchTopAnimes } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import handleScrollHiddenTabBar from "@/utils/handleScrollHiddenTabBar";
@@ -21,6 +22,8 @@ export default function HomeScreen() {
   const { setTabBarVisible } = useTabBar();
 
   const { width } = useWindowDimensions();
+  const backgroundColor = useThemeColor({}, "background");
+
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -45,34 +48,29 @@ export default function HomeScreen() {
   return (
     <Animated.ScrollView
       ref={scrollRef}
-      className="flex-[1] min-h-full relative bg-gray-950"
+      className="flex-[1] min-h-full relative"
       contentContainerStyle={{ paddingBottom: 20 }}
       scrollEventThrottle={16}
       onScroll={(event) =>
         handleScrollHiddenTabBar({ event, setTabBarVisible })
       }
+      style={{ backgroundColor }}
     >
       <CarouselGradientAbsolute
         headerAnimatedStyle={headerAnimatedStyle}
         animes={animes ? animes.data : []}
       />
 
-      <View className="pt-10 relative z-10 w-full">
+      <View className="pt-20 relative z-10 w-full">
         <ThemedText type="title" className="text-center">
           Jikan
         </ThemedText>
-        <View className="max-w-[300] mx-auto w-full mt-10">
-          <Pressable onPress={() => router.push("/search")}>
-            <View
-              style={{ borderWidth: 1, borderColor: "#374151" }}
-              className="bg-gray-950 py-2 gap-2 gray-400 rounded-full ps-4 px-1 flex-row items-center"
-            >
-              <IconSymbol name="search" color={"#9ca3af"} />
-              <ThemedText className="!text-sm" style={{ color: "#9ca3af" }}>
-                Search...
-              </ThemedText>
-            </View>
-          </Pressable>
+        <View className="max-w-[270] relative mx-auto w-full mt-10">
+          <SearchBar text="" placeholder="Search..." />
+          <Pressable
+            className="absolute  w-full left-0 h-full"
+            onPress={() => router.push("/search")}
+          ></Pressable>
         </View>
       </View>
 

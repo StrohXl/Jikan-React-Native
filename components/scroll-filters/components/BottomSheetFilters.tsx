@@ -2,6 +2,7 @@ import BottomSheet from "@/components/bottom-sheet/BottomSheet";
 import { BottomSheetHandle } from "@/components/bottom-sheet/types";
 import { ThemedText } from "@/components/themed-text";
 import { useContextSearch } from "@/features/search/hooks/contextSearch";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { getTitleGenres, getTitleValues } from "../utils/getTitleValues";
@@ -23,6 +24,8 @@ const BottomSheetFilters = ({
     refBottomSheetGenres.current?.openSheet();
   };
 
+  const dark = useThemeColor({}, "dark");
+
   return (
     <BottomSheet
       title={"Filters"}
@@ -33,7 +36,7 @@ const BottomSheetFilters = ({
         <View
           key={item.title}
           className={`${index === 0 ? "pb-3" : "py-3"}`}
-          style={{ borderBottomWidth: 1, borderBottomColor: "#333" }}
+          style={{ borderBottomWidth: 1, borderBottomColor: dark }}
         >
           <View className="justify-between flex-row">
             <ThemedText type="default">{item.title}</ThemedText>
@@ -58,10 +61,7 @@ const BottomSheetFilters = ({
         </View>
       ))}
       {genres.values.length > 0 && (
-        <View
-          className={`py-3`}
-          style={{ borderBottomWidth: 1, borderBottomColor: "#333" }}
-        >
+        <View className={`py-3`}>
           <View className="justify-between flex-row">
             <ThemedText type="default">{genres.title}</ThemedText>
             <TouchableOpacity onPress={openBottomSheetGenres}>

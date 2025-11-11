@@ -1,30 +1,39 @@
-import BottomSheet from "@/components/bottom-sheet/BottomSheet";
-import { BottomSheetHandle } from "@/components/bottom-sheet/types";
+import ContainerRadioButton from "@/components/ContainerRadioButton";
 import { ThemedText } from "@/components/themed-text";
-import React, { useRef } from "react";
-import { Button, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ThemedView } from "@/components/themed-view";
+import React, { useContext } from "react";
+import { ContainerTheme } from "../_layout";
 
 const Settings = () => {
-  const refBottomSheet = useRef<BottomSheetHandle>(null);
+  const context = useContext(ContainerTheme);
+
   return (
-    <GestureHandlerRootView>
-      <Button
-        title="Show Content"
-        onPress={() => {
-          refBottomSheet.current?.openSheet();
-        }}
-      />
-      <BottomSheet
-        ref={refBottomSheet}
-        activeHeight={400}
-        backgroundColor="#111827"
-      >
-        <View>
-          <ThemedText>Holaaaaaaaaaaaa </ThemedText>
-        </View>
-      </BottomSheet>
-    </GestureHandlerRootView>
+    <ThemedView className="h-full px-4">
+      <ThemedText type="title" className="text-center my-10">
+        Settings
+      </ThemedText>
+
+      <ThemedView>
+        <ThemedText type="subtitle">Mode</ThemedText>
+        <ThemedView className="mt-6 gap-4">
+          <ContainerRadioButton
+            onPress={() => context?.toggleTheme("dark")}
+            checked={context?.theme === "dark"}
+            title="Dark Mode"
+          />
+          <ContainerRadioButton
+            onPress={() => context?.toggleTheme("light")}
+            checked={context?.theme === "light"}
+            title="Light Mode"
+          />
+          <ContainerRadioButton
+            onPress={() => context?.toggleTheme(false)}
+            checked={context?.theme === false && true}
+            title="System Mode"
+          />
+        </ThemedView>
+      </ThemedView>
+    </ThemedView>
   );
 };
 

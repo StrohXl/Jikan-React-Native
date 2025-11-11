@@ -1,3 +1,4 @@
+import { useThemeColor } from "@/hooks/use-theme-color";
 import React, {
   ReactNode,
   RefObject,
@@ -25,7 +26,7 @@ import { BottomSheetHandle } from "./types";
 const BottomSheet = ({
   activeHeight,
   backDropColor = "rgba(0,0,0,0.8)",
-  backgroundColor = "#111827",
+  backgroundColor,
   children,
   ref,
   title,
@@ -41,6 +42,12 @@ const BottomSheet = ({
   const { height: screenHeight } = Dimensions.get("screen");
   const closedPositionY = screenHeight;
   const openPositionY = screenHeight - activeHeight;
+
+  const colorThemes = {
+    bacground: useThemeColor({}, "background"),
+    text: useThemeColor({}, "text"),
+    dark: useThemeColor({}, "darkLight"),
+  };
 
   const refBody = useRef<View>(null);
 
@@ -137,7 +144,9 @@ const BottomSheet = ({
           sheeStyle,
           {
             height: activeHeight,
-            backgroundColor: backgroundColor,
+            backgroundColor: backgroundColor
+              ? backgroundColor
+              : colorThemes.bacground,
             paddingBottom: insets.bottom,
           },
           {
@@ -155,7 +164,7 @@ const BottomSheet = ({
           <View
             style={{
               alignItems: "center",
-              borderBottomColor: "#222",
+              borderBottomColor: colorThemes.dark,
               borderBottomWidth: 1,
             }}
           >
@@ -163,7 +172,7 @@ const BottomSheet = ({
               style={{
                 width: 40,
                 height: 4,
-                backgroundColor: "white",
+                backgroundColor: colorThemes.text,
                 borderRadius: 20,
                 marginTop: 15,
                 marginBottom: 10,

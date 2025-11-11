@@ -1,3 +1,4 @@
+import { useThemeColor } from "@/hooks/use-theme-color";
 import React from "react";
 import {
   TextInput,
@@ -24,20 +25,27 @@ const SearchBar = ({
   defaultValue?: string;
   onPressClose?: () => void;
 }) => {
+  const primaryColorTheme = useThemeColor({}, "primary");
+  const darkLightColorTheme = useThemeColor({}, "darkLight");
+  const textColor = useThemeColor({}, "text");
   return (
     <View
-      style={{ borderWidth: 1, borderColor: "#9ca3af" }}
-      className="bg-gray-950 gray-400 rounded-full ps-4 px-1 flex-row items-center"
+      style={{
+        borderWidth: 1,
+        borderColor: darkLightColorTheme,
+        backgroundColor: primaryColorTheme,
+      }}
+      className=" rounded-full ps-4 px-1 flex-row items-center"
     >
-      <IconSymbol name="search" size={20} color={"#9ca3af"} />
+      <IconSymbol name="search" size={20} />
       <TextInput
         returnKeyType="search"
         ref={ref}
         value={text}
         placeholder={placeholder}
-        style={{ padding: 0, height: 32 }}
-        placeholderTextColor={"#9ca3af"}
-        className="flex-1 ps-2 text-gray-200"
+        style={{ padding: 0, height: 32, color: textColor }}
+        placeholderTextColor={`${textColor}80`}
+        className="flex-1 ps-2"
         onChange={onChange}
         onSubmitEditing={onSubmitEditing}
         defaultValue={defaultValue}
@@ -45,7 +53,7 @@ const SearchBar = ({
       {text !== "" && (
         <TouchableOpacity onPress={onPressClose}>
           <View className="justify-center px-4" style={{ height: 32 }}>
-            <IconSymbol name="close" size={16} color={"#9ca3af"} />
+            <IconSymbol name="close" size={16} />
           </View>
         </TouchableOpacity>
       )}

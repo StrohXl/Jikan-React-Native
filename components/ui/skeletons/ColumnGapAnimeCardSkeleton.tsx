@@ -2,26 +2,20 @@ import React from "react";
 import { View } from "react-native";
 import AnimeCardSkeleton from "./AnimeCardSkeleton";
 
-const ColumnGapAnimeCardSkeleton = ({
-  cardWidth,
-  columnGap,
-}: {
-  columnGap: number;
-  cardWidth: number;
-}) => {
+const ColumnGapAnimeCardSkeleton = ({ columnGap }: { columnGap: number }) => {
   return (
     <>
       <View className="flex-row" style={{ columnGap: columnGap }}>
-        <AnimeCardSkeleton widthImage={cardWidth} />
-        <AnimeCardSkeleton widthImage={cardWidth} />
+        <AnimeCardSkeleton />
+        <AnimeCardSkeleton />
       </View>
       <View className="flex-row" style={{ columnGap: columnGap }}>
-        <AnimeCardSkeleton widthImage={cardWidth} />
-        <AnimeCardSkeleton widthImage={cardWidth} />
+        <AnimeCardSkeleton />
+        <AnimeCardSkeleton />
       </View>
       <View className="flex-row" style={{ columnGap: columnGap }}>
-        <AnimeCardSkeleton widthImage={cardWidth} />
-        <AnimeCardSkeleton widthImage={cardWidth} />
+        <AnimeCardSkeleton />
+        <AnimeCardSkeleton />
       </View>
     </>
   );

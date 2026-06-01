@@ -4,21 +4,16 @@ import React from "react";
 
 const ListEmptyComponent = ({
   loading,
-  cardWidth,
   columnGap,
 }: {
   loading: boolean;
   columnGap: number;
-  cardWidth: number;
 }) => {
   return (
     <>
       {loading ? (
         <>
-          <ColumnGapAnimeCardSkeleton
-            cardWidth={cardWidth}
-            columnGap={columnGap}
-          />
+          <ColumnGapAnimeCardSkeleton columnGap={columnGap} />
         </>
       ) : (
         <ListEmpty

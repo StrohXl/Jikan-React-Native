@@ -18,13 +18,11 @@ type CarouselProps = {
         }
     )[];
   };
-  height: number;
   children: ReactNode;
 };
 
 export default function ParallaxScrollGradient({
   headerAnimatedStyle,
-  height,
   children,
 }: CarouselProps) {
   const backgroundTheme = useThemeColor({}, "background");
@@ -32,10 +30,12 @@ export default function ParallaxScrollGradient({
   return (
     <View
       className="absolute -z-10 w-full top-0 left-0 overflow-hidden"
-      style={{ height }}
+      style={{ height: "100%", maxHeight: 400 }}
     >
       <View>
-        <Animated.View style={[headerAnimatedStyle, { height }]}>
+        <Animated.View
+          style={[headerAnimatedStyle, { height: "100%", maxHeight: 400 }]}
+        >
           {children}
         </Animated.View>
         <LinearGradient

@@ -63,7 +63,7 @@ export default function AnimeById() {
           translateY: interpolate(
             scrollOffset.value / 3,
             [-width, 0, width],
-            [-width / 2, 0, width * 0.75]
+            [-width / 2, 0, width * 0.75],
           ),
         },
         {
@@ -75,35 +75,39 @@ export default function AnimeById() {
 
   return (
     <Animated.ScrollView
-      className="flex-1 min-h-full"
+      className="flex-1"
       style={{ backgroundColor: background }}
     >
       {loading ? (
-        <View className="min-h-full w-full items-center justify-center">
+        <View
+          style={{ flex: 1 }}
+          className="min-h-full w-full items-center justify-center"
+        >
           <ActivityIndicator color={textColor} size={40} />
         </View>
       ) : (
         <>
-          <View className="relative" style={{ height: width }}>
-            <ParallaxScrollGradient
-              headerAnimatedStyle={headerAnimatedStyle}
-              height={width}
-            >
+          <View className="relative" style={{ height: 400 }}>
+            <ParallaxScrollGradient headerAnimatedStyle={headerAnimatedStyle}>
               <Image
                 source={{
                   uri: anime?.images.webp.large_image_url,
-                  width: 300,
-                  height: width,
                 }}
-                className="w-full"
+                style={{ height: 400 }}
+                className="w-full h-full object-cover"
               />
             </ParallaxScrollGradient>
           </View>
-          <ThemedView className="py-4" style={{ paddingInline: 10 }}>
-            <ThemedText type="subtitle">{anime?.title}</ThemedText>
-            <View className="flex-row gap-2">
+          <ThemedView
+            className="py-6 mx-auto max-w-[1200px]"
+            style={{ paddingInline: 10 }}
+          >
+            <ThemedText type="title" className="mt-4">
+              {anime?.title}
+            </ThemedText>
+            <View className="flex-row gap-2 mt-4">
               {anime?.score && (
-                <View className="items-center flex-row gap-1 mt-2">
+                <View className="items-center flex-row gap-1 ">
                   <IconSymbol name="star-border" color={"#ca8a04"} />
                   <ThemedText
                     type="default"
@@ -114,18 +118,18 @@ export default function AnimeById() {
                 </View>
               )}
             </View>
-            <View className="mt-2">
+            <View className="mt-4">
               <ThemedText type="default">Type: {anime?.type}</ThemedText>
             </View>
             {anime?.episodes && anime.type !== "Movie" && (
-              <View className="mt-2">
+              <View className="mt-4">
                 <ThemedText type="default">
                   {anime.episodes} Episodes
                 </ThemedText>
               </View>
             )}
             {anime?.duration && anime.type === "Movie" && (
-              <View className="mt-2">
+              <View className="mt-4">
                 <ThemedText type="default">
                   Duration: {anime.duration}
                 </ThemedText>
@@ -154,11 +158,11 @@ export default function AnimeById() {
                 <ThemedText type="subtitle" className="mb-4">
                   Trailer:
                 </ThemedText>
-                <View className="rounded-lg overflow-hidden">
+                <View className="rounded-xl overflow-hidden ">
                   <YoutubePlayer
                     onFullScreenChange={onFullScreen}
-                    height={(width - 20) / 1.78}
                     videoId={videoId}
+                    height={(width >= 1180 ? 1185 : width - 20) / 1.78}
                   />
                 </View>
               </View>

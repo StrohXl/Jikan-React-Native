@@ -4,8 +4,8 @@ import { useThemeColor } from "@/hooks/use-theme-color";
 import React, { useEffect } from "react";
 import { FlatList, useWindowDimensions } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
-import ListEmptyComponent from "./ListEmpty";
 import { useContextSearch } from "./hooks/contextSearch";
+import ListEmptyComponent from "./ListEmpty";
 
 const FlatListAnimeCard = ({
   refFlatList,
@@ -15,7 +15,6 @@ const FlatListAnimeCard = ({
   const { width } = useWindowDimensions();
   const paddingHorizontal = 10;
   const columnGap = 15;
-  const cardWidth = (width - paddingHorizontal * 2 - columnGap) / 2;
   const background = useThemeColor({}, "background");
 
   const { filters, fetchData, textSearch, loadingData, error, data, genres } =
@@ -35,6 +34,20 @@ const FlatListAnimeCard = ({
       data={error ? [] : loadingData ? [] : data?.data}
       scrollEnabled={loadingData ? false : true}
       keyExtractor={(item) => item.title}
+      horizontal={false}
+      style={{
+        paddingInline: paddingHorizontal,
+        backgroundColor: background,
+      }}
+      contentContainerStyle={{
+        gap: 15,
+        paddingTop: 10,
+        paddingBottom: 20,
+      }}
+      columnWrapperStyle={{
+        gap: 15,
+      }}
+      numColumns={width >= 768 ? 5 : 2}
       ListHeaderComponent={
         <ThemedText
           type="defaultSemiBold"
@@ -44,31 +57,13 @@ const FlatListAnimeCard = ({
         </ThemedText>
       }
       renderItem={({ item }) => (
-        <Animated.View entering={FadeIn.duration(500)}>
-          <AnimeCard widthImage={cardWidth} anime={item} />
+        <Animated.View style={{ flex: 1 }} entering={FadeIn.duration(500)}>
+          <AnimeCard anime={item} />
         </Animated.View>
       )}
       ListEmptyComponent={
-        <ListEmptyComponent
-          cardWidth={cardWidth}
-          columnGap={columnGap}
-          loading={loadingData}
-        />
+        <ListEmptyComponent columnGap={columnGap} loading={loadingData} />
       }
-      style={{
-        paddingInline: paddingHorizontal,
-        backgroundColor: background,
-      }}
-      horizontal={false}
-      contentContainerStyle={{
-        gap: 15,
-        paddingTop: 10,
-        paddingBottom: 20,
-      }}
-      columnWrapperStyle={{
-        gap: 15,
-      }}
-      numColumns={2}
     />
   );
 };

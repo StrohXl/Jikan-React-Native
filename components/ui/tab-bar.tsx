@@ -1,6 +1,7 @@
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React, { useEffect } from "react";
+import { View } from "react-native";
 import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
 import TabBarIcon from "./tab-bar-icon";
 
@@ -32,27 +33,37 @@ const TabBar = ({
       style={{
         opacity,
         transform: [{ translateY }],
-        backgroundColor: primaryColorTheme,
+        position: "absolute",
+        bottom: 15,
+        width: "100%",
+        left: 0,
       }}
-      className={`absolute self-center flex-row overflow-hidden w-[80%] p-1 justify-between bottom-[15] rounded-full`}
     >
-      {state.routes.map(({ name }, index) => (
-        <TabBarIcon
-          onPress={() => navigation.navigate(name)}
-          key={name}
-          title={name === "index" ? "Home" : name}
-          icon={
-            name === "index"
-              ? "home"
-              : name === "schedule"
-                ? "schedule"
-                : name === "top"
-                  ? "10k"
-                  : "settings"
-          }
-          focused={state.index === index}
-        />
-      ))}
+      <View
+        style={{
+          backgroundColor: primaryColorTheme,
+          maxWidth: 400,
+        }}
+        className={`absolute self-center flex-row overflow-hidden w-[80%] p-1 justify-between bottom-[15] rounded-full`}
+      >
+        {state.routes.map(({ name }, index) => (
+          <TabBarIcon
+            onPress={() => navigation.navigate(name)}
+            key={name}
+            title={name === "index" ? "Home" : name}
+            icon={
+              name === "index"
+                ? "home"
+                : name === "schedule"
+                  ? "schedule"
+                  : name === "top"
+                    ? "10k"
+                    : "settings"
+            }
+            focused={state.index === index}
+          />
+        ))}
+      </View>
     </Animated.View>
   );
 };

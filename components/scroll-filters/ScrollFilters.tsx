@@ -18,7 +18,7 @@ const ScrollFilters = () => {
   const refBottomSheetFilters = useRef<BottomSheetHandle | null>(null);
   const refBottomSheetGenres = useRef<BottomSheetHandle | null>(null);
   const refBottomSheetFilterArray = filters.map(() =>
-    createRef<BottomSheetHandle>()
+    createRef<BottomSheetHandle>(),
   );
 
   const paramOpenBottomSheetRefs = {
@@ -28,7 +28,7 @@ const ScrollFilters = () => {
   };
 
   return (
-    <>
+    <View>
       <BottomSheetFilters
         refBottomSheetGenres={refBottomSheetGenres}
         refBottomSheetFilterArray={refBottomSheetFilterArray}
@@ -85,7 +85,7 @@ const ScrollFilters = () => {
                       })
                     }
                   />
-                )
+                ),
             )}
             {genres.values.length > 0 && genres.status && (
               <Tag
@@ -115,7 +115,7 @@ const ScrollFilters = () => {
                       })
                     }
                   />
-                )
+                ),
             )}
             {genres.values.length > 0 && !genres.status && (
               <Tag
@@ -130,7 +130,7 @@ const ScrollFilters = () => {
           </>
         )}
       </ScrollView>
-    </>
+    </View>
   );
 };
 

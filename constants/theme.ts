@@ -29,7 +29,7 @@ export const Colors = {
     tabIconSelected: tintColorDark,
     primary: "#1f2937",
     dark: "#333",
-    darkLight: "#555",
+    darkLight: "#364153",
   },
 };
 

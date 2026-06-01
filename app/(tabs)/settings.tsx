@@ -13,7 +13,7 @@ const Settings = () => {
         Settings
       </ThemedText>
 
-      <ThemedView>
+      <ThemedView className="max-w-[600px] mx-auto w-full">
         <ThemedText type="subtitle">Mode</ThemedText>
         <ThemedView className="mt-6 gap-4">
           <ContainerRadioButton

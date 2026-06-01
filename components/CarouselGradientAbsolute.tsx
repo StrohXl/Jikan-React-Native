@@ -41,28 +41,22 @@ export default function CarouselGradientAbsolute({
   const { width } = useWindowDimensions();
 
   return (
-    <ParallaxScrollGradient
-      height={width}
-      headerAnimatedStyle={headerAnimatedStyle}
-    >
+    <ParallaxScrollGradient headerAnimatedStyle={headerAnimatedStyle}>
       <Carousel
         autoPlayInterval={5000}
         data={animes}
         scrollAnimationDuration={3000}
-        height={width}
+        height={400}
         loop={true}
         pagingEnabled={true}
         snapEnabled={true}
         width={width}
         autoPlay={true}
-        style={{
-          width: width,
-        }}
         renderItem={({ item }) => (
           <Image
             source={{ uri: item.images.webp.large_image_url }}
             width={width}
-            height={width}
+            className="h-full max-h-[400px]"
           />
         )}
         customAnimation={animationStyle}

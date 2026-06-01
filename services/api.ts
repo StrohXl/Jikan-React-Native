@@ -8,7 +8,7 @@ import { ResponseAnimes } from "./models/responseAnimes";
 export const baseUrl = `https://api.jikan.moe/v4`;
 
 export const fetchTopAnimes = async (
-  params?: FetchTopAnimeParams
+  params?: FetchTopAnimeParams,
 ): Promise<ResponseAnimes> => {
   const modifiedParams: FetchTopAnimeParams = {
     ...params,
@@ -28,7 +28,7 @@ export const fetchTopAnimes = async (
 };
 
 export const fetchAnimeById = async (
-  id: number
+  id: number,
 ): Promise<{ data: DataAnime }> => {
   const endPoint = `/anime/${id}`;
   const url = `${baseUrl + endPoint}`;
@@ -43,7 +43,7 @@ export const fetchAnimeById = async (
 };
 
 export const fetchAnime = async (
-  params?: FetchAnimeParams
+  params?: FetchAnimeParams,
 ): Promise<ResponseAnimes> => {
   const modifiedParams: FetchAnimeParams = {
     ...params,

@@ -5,19 +5,10 @@ import { Image, Pressable, View } from "react-native";
 import { ThemedText } from "./themed-text";
 import { IconSymbol } from "./ui/icon-symbol";
 
-const AnimeCardHorizontal = ({
-  anime,
-  widthImage = 200,
-  show = false,
-}: {
-  anime: DataAnime;
-  widthImage?: number;
-  show?: boolean;
-}) => {
-  const height = widthImage / 0.7;
-
+const AnimeCardHorizontal = ({ anime }: { anime: DataAnime }) => {
   return (
     <Link
+      style={{ flex: 1 }}
       href={{
         pathname: "/anime/[id]",
         params: { id: anime.mal_id },
@@ -26,19 +17,20 @@ const AnimeCardHorizontal = ({
     >
       <Pressable className="rounded-xl overflow-hidden">
         {({ pressed }) => (
-          <View
-            className={`flex-row gap-4 overflow-hidden`}
-            style={{ borderRadius: 10 }}
-          >
-            <Image
-              source={{ uri: anime.images.webp.image_url }}
-              width={widthImage}
-              height={height}
-              className="rounded-md"
-            />
-            <View className="flex-shrink">
+          <View className={`flex-row gap-4 overflow-hidden w-full`}>
+            <View style={{ flex: 1 }}>
+              <Image
+                source={{ uri: anime.images.webp.image_url }}
+                style={{
+                  height: "auto",
+                  maxWidth: 280,
+                }}
+                className="rounded-md h-auto aspect-[0.6416]"
+              />
+            </View>
+            <View style={{ flex: 1 }}>
               <ThemedText
-                className="line-clamp-1 !text-[16px]"
+                className="line-clamp-4 !text-[16px]"
                 type="defaultSemiBold"
               >
                 {anime.title}

@@ -4,7 +4,7 @@ import { useThemeColor } from "@/hooks/use-theme-color";
 import { fetchTopAnimes } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import handleScrollHiddenTabBar from "@/utils/handleScrollHiddenTabBar";
-import { FlatList, View } from "react-native";
+import { FlatList, useWindowDimensions, View } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
 import { useTabBar } from "./_layout";
 
@@ -12,13 +12,23 @@ const Top = () => {
   const { data: animes } = useFetch({ fetchFunction: fetchTopAnimes });
   const { setTabBarVisible } = useTabBar();
   const backgroundColor = useThemeColor({}, "background");
+  const { width } = useWindowDimensions();
   return (
     <FlatList
+      keyExtractor={(item) => item.title}
+      contentContainerStyle={{
+        gap: 20,
+        paddingBottom: 20,
+        maxWidth: 1200,
+        marginInline: "auto",
+      }}
+      style={{ paddingInline: 10, paddingBottom: 20, backgroundColor }}
+      horizontal={false}
+      data={animes?.data}
+      numColumns={width >= 768 ? 3 : width >= 600 ? 2 : 1}
       onScroll={(event) =>
         handleScrollHiddenTabBar({ event, setTabBarVisible })
       }
-      style={{ paddingInline: 10, paddingBottom: 20, backgroundColor }}
-      data={animes?.data}
       ListHeaderComponent={() => (
         <View className="my-10">
           <ThemedText type="title" className="text-center">
@@ -26,11 +36,12 @@ const Top = () => {
           </ThemedText>
         </View>
       )}
-      keyExtractor={(item) => item.title}
-      contentContainerStyle={{ gap: 20, paddingBottom: 20 }}
       renderItem={({ item, index }) => (
-        <Animated.View entering={FadeInRight.delay(index * 200).duration(500)}>
-          <AnimeCardHorizontal anime={item} widthImage={120} />
+        <Animated.View
+          style={{ flex: 1 }}
+          entering={FadeInRight.delay(index * 200).duration(500)}
+        >
+          <AnimeCardHorizontal anime={item} />
         </Animated.View>
       )}
     />

@@ -1,6 +1,6 @@
 import { useThemeColor } from "@/hooks/use-theme-color";
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Animated, {
   FadeIn,
   FadeOut,
@@ -30,7 +30,6 @@ const TabBarIcon = ({
     <AnimatedTouchableOpacity
       layout={LinearTransition.springify().mass(0.5)}
       onPress={onPress}
-      className={`flex-row items-center justify-center gap-2 rounded-full overflow-hidden`}
       style={{
         borderRadius: 100,
         paddingVertical: 8,
@@ -38,21 +37,25 @@ const TabBarIcon = ({
         backgroundColor: focused ? dark : "transparent",
       }}
     >
-      {icon === "10k" ? (
-        <IconTrophy size={24} color={focused ? text : "#6b7280"} />
-      ) : (
-        <IconSymbol name={icon} color={focused ? text : "#6b7280"} />
-      )}
-      {focused && (
-        <Animated.Text
-          entering={FadeIn.duration(200)}
-          exiting={FadeOut.duration(200)}
-          style={{ color: text }}
-          className="capitalize font-bold"
-        >
-          {title}
-        </Animated.Text>
-      )}
+      <View
+        className={`flex-row items-center justify-center gap-2 rounded-full overflow-hidden`}
+      >
+        {icon === "10k" ? (
+          <IconTrophy size={24} color={focused ? text : "#6b7280"} />
+        ) : (
+          <IconSymbol name={icon} color={focused ? text : "#6b7280"} />
+        )}
+        {focused && (
+          <Animated.Text
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+            style={{ color: text, textTransform: "capitalize" }}
+            className="capitalize font-bold"
+          >
+            {title}
+          </Animated.Text>
+        )}
+      </View>
     </AnimatedTouchableOpacity>
   );
 };

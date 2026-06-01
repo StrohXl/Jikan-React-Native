@@ -6,7 +6,7 @@ import { fetchRecentEpisodes } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import handleScrollHiddenTabBar from "@/utils/handleScrollHiddenTabBar";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, useWindowDimensions, View } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
 import { useTabBar } from "./_layout";
 
@@ -50,39 +50,45 @@ type Day =
   | "saturday"
   | "sunday";
 
+const arrayDays: ArrayDays = [
+  {
+    day: "monday",
+    width: 90.3,
+  },
+  {
+    day: "tuesday",
+    width: 92.7,
+  },
+  {
+    day: "wednesday",
+    width: 113.7,
+  },
+  {
+    day: "thursday",
+    width: 98.7,
+  },
+  {
+    day: "friday",
+    width: 77.3,
+  },
+  {
+    day: "saturday",
+    width: 95.7,
+  },
+  {
+    day: "sunday",
+    width: 86,
+  },
+];
+
 const Schedule = () => {
-  const today = new Date().getDay() - 1;
-  const arrayDays: ArrayDays = [
-    {
-      day: "monday",
-      width: 90.3,
-    },
-    {
-      day: "tuesday",
-      width: 92.7,
-    },
-    {
-      day: "wednesday",
-      width: 113.7,
-    },
-    {
-      day: "thursday",
-      width: 98.7,
-    },
-    {
-      day: "friday",
-      width: 77.3,
-    },
-    {
-      day: "saturday",
-      width: 95.7,
-    },
-    {
-      day: "sunday",
-      width: 86,
-    },
-  ];
-  const [day, setDay] = useState<Day>(arrayDays[today].day);
+  let today = new Date().getDay();
+  today == 0 ? (today = 6) : today;
+  const { width } = useWindowDimensions();
+
+  const [day, setDay] = useState<Day>(
+    today === 0 ? "sunday" : arrayDays[today].day,
+  );
   const flatListRef = useRef<FlatList>(null);
 
   const backgroundColor = useThemeColor({}, "background");
@@ -98,13 +104,11 @@ const Schedule = () => {
 
   const getItemLayout = (
     data: ArrayLike<any> | null | undefined,
-    index: number
+    index: number,
   ) => {
     const findIndex = arrayDays.findIndex((item) => item === arrayDays[today]);
     const length = arrayDays[index].width + 10;
-    console.log(
-      arrayDays.slice(0, index).reduce((total, item) => total + length, 0)
-    );
+
     return {
       length, // ancho + margin
       offset: arrayDays
@@ -112,7 +116,7 @@ const Schedule = () => {
         .reduce(
           (total, item, index) =>
             total + item.width + 10 + (index === findIndex ? 40.3 : 0),
-          0
+          0,
         ),
       index,
     };
@@ -135,6 +139,14 @@ const Schedule = () => {
       }
       style={{ paddingInline: 10, paddingBottom: 20, backgroundColor }}
       data={animes?.data}
+      numColumns={width >= 768 ? 2 : 1}
+      keyExtractor={(item) => item.title}
+      contentContainerStyle={{
+        gap: 20,
+        paddingBottom: 20,
+        maxWidth: 1200,
+        marginInline: "auto",
+      }}
       ListHeaderComponent={
         <>
           <View className="mt-10">
@@ -142,7 +154,12 @@ const Schedule = () => {
               Schedule
             </ThemedText>
           </View>
-          <View className="mb-[10px] mt-[20px]">
+          <View
+            style={{
+              marginTop: 30,
+            }}
+            className="mb-[10px]"
+          >
             <FlatList
               ref={flatListRef}
               data={arrayDays}
@@ -163,11 +180,12 @@ const Schedule = () => {
           </View>
         </>
       }
-      keyExtractor={(item) => item.title}
-      contentContainerStyle={{ gap: 20, paddingBottom: 20 }}
       renderItem={({ item, index }) => (
-        <Animated.View entering={FadeInRight.delay(index * 200).duration(500)}>
-          <AnimeCardHorizontal anime={item} widthImage={120} />
+        <Animated.View
+          style={{ flex: 1 }}
+          entering={FadeInRight.delay(index * 200).duration(500)}
+        >
+          <AnimeCardHorizontal anime={item} />
         </Animated.View>
       )}
     />

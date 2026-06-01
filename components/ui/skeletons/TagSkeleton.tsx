@@ -1,22 +1,16 @@
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Skeleton } from "moti/skeleton";
 import React from "react";
-import { useColorScheme, View } from "react-native";
+import { View } from "react-native";
 
 const TagSkeleton = () => {
-  const colorTheme = useColorScheme() ?? "dark";
-  const dark = useThemeColor({}, "dark");
   return (
-    <Skeleton
-      show={true}
-      height={27}
-      width={100}
-      radius={100}
-      backgroundColor={dark}
-      colorMode={colorTheme}
-    >
-      <View style={{ height: 30, justifyContent: "center" }}></View>
-    </Skeleton>
+    <View
+      style={{
+        height: 30,
+        width: 100,
+        borderRadius: "50rem",
+        backgroundColor: "#999",
+      }}
+    ></View>
   );
 };
 

@@ -40,16 +40,19 @@ export function SectionFlatListHorizontalAnimes({
                 gap: 15,
               }}
             >
-              <AnimeCardSkeleton show={true} />
-              <AnimeCardSkeleton show={true} />
+              <AnimeCardSkeleton />
+              <AnimeCardSkeleton />
             </ScrollView>
           ) : (
             <FlatList
-              showsHorizontalScrollIndicator={false}
               data={data?.data}
               keyExtractor={(item) => item.title}
+              contentContainerStyle={{ paddingBottom: 15 }}
               renderItem={({ item }) => (
-                <Animated.View entering={FadeIn.duration(500)}>
+                <Animated.View
+                  style={{ minWidth: 200, maxWidth: 200 }}
+                  entering={FadeIn.duration(500)}
+                >
                   <AnimeCard anime={item} />
                 </Animated.View>
               )}

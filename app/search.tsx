@@ -25,6 +25,7 @@ const Search = () => {
             paddingBottom: 10,
             borderBottomWidth: 1,
             borderBottomColor: dark,
+            position: "static",
           }}
         >
           <ListHeader refFlatList={refFlatList} />

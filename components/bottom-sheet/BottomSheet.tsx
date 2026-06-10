@@ -62,7 +62,7 @@ const BottomSheet = ({
     const opacity = interpolate(
       sheetPositionY.value,
       [closedPositionY, openPositionY],
-      [0, 0.5]
+      [0, 0.5],
     );
     return {
       opacity,
@@ -99,7 +99,7 @@ const BottomSheet = ({
       const newPositionY = gestureStarPositionY.value + event.translationY;
       sheetPositionY.value = Math.min(
         Math.max(newPositionY, openPositionY),
-        closedPositionY
+        closedPositionY,
       );
     })
     .onEnd(() => {

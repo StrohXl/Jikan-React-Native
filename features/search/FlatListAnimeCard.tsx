@@ -39,6 +39,7 @@ const FlatListAnimeCard = ({
       style={{
         paddingInline: paddingHorizontal,
         backgroundColor: background,
+        zIndex: -1,
       }}
       contentContainerStyle={{
         gap: 15,

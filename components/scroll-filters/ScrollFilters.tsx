@@ -28,7 +28,11 @@ const ScrollFilters = () => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        position: "static",
+      }}
+    >
       <BottomSheetFilters
         refBottomSheetGenres={refBottomSheetGenres}
         refBottomSheetFilterArray={refBottomSheetFilterArray}

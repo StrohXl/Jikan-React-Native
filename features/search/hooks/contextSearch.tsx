@@ -42,7 +42,7 @@ interface TypeContextSearch {
 }
 
 const UseContextSearch = createContext<TypeContextSearch | undefined>(
-  undefined
+  undefined,
 );
 
 const ContextSearch = ({
@@ -54,6 +54,7 @@ const ContextSearch = ({
 }) => {
   const [text, setText] = useState<string>("");
   const [textSearch, setTextSearch] = useState<string>("");
+
   const [filters, setFilters] = useState<FilterParamsType[]>([
     {
       title: "Type",
@@ -166,7 +167,7 @@ const ContextSearch = ({
       }
       return acc;
     },
-    {} as { [key: string]: any }
+    {} as { [key: string]: any },
   );
   const paramGenreValue = params?.genres !== "undefined" ? params.genres : "";
   const paramGenreStatus = params?.genres !== "undefined" ? true : false;
@@ -200,6 +201,10 @@ const ContextSearch = ({
       setGenres((prev) => ({ ...prev, values: dataGenres }));
     }
   }, [loadingGenres]);
+
+  useEffect(() => {
+    fetchData();
+  }, [filters, genres]);
 
   return (
     <UseContextSearch.Provider

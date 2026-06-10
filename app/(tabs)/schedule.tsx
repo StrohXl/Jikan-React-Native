@@ -6,7 +6,7 @@ import { fetchRecentEpisodes } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import handleScrollHiddenTabBar from "@/utils/handleScrollHiddenTabBar";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, useWindowDimensions, View } from "react-native";
+import { FlatList, useWindowDimensions } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
 import { useTabBar } from "./_layout";
 
@@ -139,45 +139,45 @@ const Schedule = () => {
       }
       style={{ paddingInline: 10, paddingBottom: 20, backgroundColor }}
       data={animes?.data}
-      numColumns={width >= 768 ? 2 : 1}
+      numColumns={width >= 768 ? 3 : width >= 768 ? 2 : 1}
       keyExtractor={(item) => item.title}
       contentContainerStyle={{
         gap: 20,
         paddingBottom: 20,
         maxWidth: 1200,
         marginInline: "auto",
+        width: "100%",
       }}
       ListHeaderComponent={
         <>
-          <View className="mt-10">
-            <ThemedText type="title" className="text-center">
-              Schedule
-            </ThemedText>
-          </View>
-          <View
+          <ThemedText type="title" className="text-center mt-10">
+            Schedule
+          </ThemedText>
+          <FlatList
+            ref={flatListRef}
+            data={arrayDays}
+            horizontal={true}
+            scrollEnabled={loading ? false : true}
+            contentContainerStyle={{
+              gap: 10,
+              justifyContent: "center",
+              flexGrow: 1,
+              paddingBottom: 10,
+            }}
             style={{
               marginTop: 30,
+              marginBottom: 10,
             }}
-            className="mb-[10px]"
-          >
-            <FlatList
-              ref={flatListRef}
-              data={arrayDays}
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              scrollEnabled={loading ? false : true}
-              contentContainerStyle={{ gap: 10 }}
-              keyExtractor={(item) => item.day}
-              getItemLayout={getItemLayout}
-              renderItem={({ item, index }) => (
-                <Tag
-                  onPress={() => changeDay(index)}
-                  title={`${item.day}${index === today ? " Today" : ""}`}
-                  status={day === item.day}
-                />
-              )}
-            ></FlatList>
-          </View>
+            keyExtractor={(item) => item.day}
+            getItemLayout={getItemLayout}
+            renderItem={({ item, index }) => (
+              <Tag
+                onPress={() => changeDay(index)}
+                title={`${item.day}${index === today ? " Today" : ""}`}
+                status={day === item.day}
+              />
+            )}
+          ></FlatList>
         </>
       }
       renderItem={({ item, index }) => (

@@ -19,7 +19,6 @@ import {
 } from "react-native-safe-area-context";
 
 import { StatusBar } from "expo-status-bar";
-import { View } from "react-native";
 export const unstable_settings = {
   anchor: "(tabs)",
 };
@@ -72,6 +71,7 @@ export default function RootLayout() {
     <SafeAreaProvider
       style={{
         paddingTop: insets.top,
+        paddingBottom: insets.bottom,
         backgroundColor:
           theme === "dark"
             ? Colors.dark.background
@@ -111,12 +111,6 @@ export default function RootLayout() {
           </Stack>
         </ThemeProvider>
       </ContainerTheme.Provider>
-      <View
-        style={{
-          height: insets.bottom,
-          backgroundColor: colorScheme === "light" ? "#fff" : "#000",
-        }}
-      ></View>
     </SafeAreaProvider>
   );
 }

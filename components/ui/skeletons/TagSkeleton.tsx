@@ -7,7 +7,7 @@ const TagSkeleton = () => {
       style={{
         height: 30,
         width: 100,
-        borderRadius: "50rem",
+        borderRadius: 100,
         backgroundColor: "#999",
       }}
     ></View>
